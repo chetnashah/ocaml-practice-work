@@ -1,0 +1,8 @@
+open Core.Std
+
+let string="\\n"
+let string = "Jon orwant"
+
+
+List.map
+ 
