@@ -1,0 +1,18 @@
+
+
+global let delcarations :
+let abc = 1;
+
+local let declaratiosn :
+let abc = 1 in expr;
+
+
+
+ways to declare a function :
+
+1) lambda way : function x -> x * x;
+
+2) multi argument let :
+let fn a b c = a+b+c
+
+
