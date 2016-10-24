@@ -1,5 +1,4 @@
 
-
 global let delcarations :
 let abc = 1;
 
@@ -66,3 +65,29 @@ also equivalent to
 function exp -> match exp with | p1 -> expr1 | p2 -> expr2 |....| pn -> exprn 
 
 "new bindings/variable declarations happen in pattern matching"
+
+Declaring new types :
+type keyword is used
+type name is always starts with lowercase letter
+type constructor is always Uppercase letter followed by "of" followed by arguments
+type constructor that does not need any argument is also known as a constant constructor
+and can be directly treated as values
+
+e.g.
+type suit = Spades | Hearts | Diamonds | Clubs;; constant constructors
+type card =
+| King of suit
+| Queen of suit
+| Knave of suit
+| Minor_card of suit * int
+| Trump of int
+| Joker;;
+
+Type constructors are useful in pattern matching : people usually write an accompanying
+tostring function for declared types like this
+
+let string_of_suit = function
+| Spades -> "spades"
+| Hearts -> "hearts"
+| Diamonds -> "diamonds"
+| Clubs -> "clubs"
