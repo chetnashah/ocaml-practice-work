@@ -1,0 +1,14 @@
+
+
+let overallexp = print_string " 2= "; 1+1;;
+
+
+(* parenthesized (grouped expressions) *)
+let hilo = ( print_string "hi"; print_string "lo"; print_string "bhye" );;
+(* hilo and hilo2 are the same thing *)
+let hilo2 = begin print_string "hi2"; print_string "lo2"; print_string "bye2" end;;
+
+
+
+
+let () = print_endline "hello start program";;

@@ -91,3 +91,28 @@ let string_of_suit = function
 | Hearts -> "hearts"
 | Diamonds -> "diamonds"
 | Clubs -> "clubs"
+
+
+-------------------------------------- Expressions -----------------------------------
+
+Sequence Control Structure : 
+A sequence of expression is also an expression, with the evaluation value of the last
+expr in sequence.
+
+i.e.  expr1; expr2; expr3; expr4; ... exprn;
+
+is also an expr with value of evaluation of exprn, and yes all expr are evaluated in order
+
+
+
+Conditinal Control Structure :
+if expr1 then expr2 else expr3 , evaluates to expr2 if expr1 is true, otherwise expr3
+
+
+Parenthesized (grouping) expressions (for sequence control structure) :
+One can group togethr multiple expression (like the sequence control structure) with value being last of all expressions
+using two ways ===> parentheses/begin end
+i.e.
+     let expr =  ( expr1; expr2; expr3; expr4; ... exprn )
+OR
+     let expr = begin expr1; expr2; expr3; expr4; ... exprn end
