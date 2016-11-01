@@ -116,3 +116,25 @@ i.e.
      let expr =  ( expr1; expr2; expr3; expr4; ... exprn )
 OR
      let expr = begin expr1; expr2; expr3; expr4; ... exprn end
+
+
+let binding is also an expression.
+let binding is defined as let pattern = expr;;, this whole line is an expr,
+so you can do:
+let a =4 in
+    let b = 5 in
+    	let c = 2 in
+	    a * b * c;;
+
+
+Function definition is an expression :
+e.g.
+function x -> x * x;; is an expression
+so you can do
+
+let sq = function x -> x * x;;
+
+bcoz let binding is nothing but let pattern = expr;;
+Similarly function with multiple cases of pattern matchin is an expr
+
+
