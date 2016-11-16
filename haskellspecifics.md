@@ -42,12 +42,12 @@ data Person {
 
 
 Sum types :
-1. Enums (constructors only)
+* Enums (constructors only)
 ```haskell
 data Bool = False | True
 ```
 
-2. Variants (Constructors with type arguments)
+* Variants (Constructors with type arguments)
 ```haskell
 -- sum of products
 data Shape = Circle Float Float Float
