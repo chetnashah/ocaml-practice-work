@@ -66,6 +66,17 @@ function exp -> match exp with | p1 -> expr1 | p2 -> expr2 |....| pn -> exprn
 
 "new bindings/variable declarations happen in pattern matching"
 
+Pattern matching can happen also without using match or function keywords,
+simply using 'let' which does bindings of unbound vars in pattern side of let
+binding
+e.g. let (x,y) = 2,3;; // binds x to 2, and y to 3
+let head :: 2 :: _ = [1;2;3];; // binds head to 1
+
+
+----------  Types and pattern matchin -------------------------
+product types : tuples(unnamed components) and records(named components)
+Sum types: Variants(qualified unions and enum)
+
 Declaring new types :
 type keyword is used
 type name is always starts with lowercase letter
@@ -73,8 +84,17 @@ type constructor is always Uppercase letter followed by "of" followed by argumen
 type constructor that does not need any argument is also known as a constant constructor
 and can be directly treated as values
 
+tuple/record(named tuples) types(product types) :
+(Note: field names should be lower case)
+type personalName = {
+     name: string;
+     initial: string option;
+     lastName: string;
+}
+
+variant(Sum) types:
 e.g.
-type suit = Spades | Hearts | Diamonds | Clubs;; constant constructors
+type suit = Spades | Hearts | Diamonds | Clubs;; constant constructors/enums
 type card =
 | King of suit
 | Queen of suit
@@ -83,14 +103,66 @@ type card =
 | Trump of int
 | Joker;;
 
-Type constructors are useful in pattern matching : people usually write an accompanying
-tostring function for declared types like this
+Type constructors are useful in pattern matching :
+people usually write an accompanying
+tostring function for declared types like this(like for java POJOs)
+
 
 let string_of_suit = function
 | Spades -> "spades"
 | Hearts -> "hearts"
 | Diamonds -> "diamonds"
 | Clubs -> "clubs"
+
+You will often see recursive variants used for defining recursive data types
+like trees etc :
+type binary_tree =
+ | Leaf of int
+ | Tree of binary_tree * binary_tree
+
+
+Since sum types and product types are algebraic data types
+you can arbitrarily combine them to make new types
+e.g.
+1) sum of product of type
+type foo =
+| Nothing
+| Pair of int * int
+| Info of String * String
+
+2)sum of sum of types
+type Meeting = Hello | Hi
+type Parting = Bye | GoodBye
+
+type Greeting = Meeting | Greeting
+
+3) product of product of types
+//t1 = string * string option  * string
+type personalName = {
+     firstName : string;
+     middleInitial : string option;
+     lastName : string;
+}
+// t2 = string option * string * string * string
+type addressInfo = {
+     address : string option;
+     state : string;
+     city : string;
+     zip : string;
+}
+// t3 = t1 * t2
+type contactInfo = {
+     perosnalName : personalName;
+     adress: addressInfo;
+}
+
+4) product of sum of types
+type suit = Clubs | Diamonds | Hearts | Spade
+type face = One | Two | Three | ... | Jack | Queen | King | Ace
+type cardPlayed = {
+     suit: suit;
+     face: face;
+}
 
 
 -------------------------------------- Expressions -----------------------------------

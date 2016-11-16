@@ -1,0 +1,35 @@
+
+For Ocaml, type names and field names are both lowercase.
+
+Make types represent your domain
+group together fields in records that are related/consistent/atomic
+like
+type postalAddress = {
+     	address1: string;
+     	address2: string;
+     	city: string;
+     	state: string;
+     	zip: string;
+     }
+
+
+to make instance of this type, you need to specify the field names also
+e.g.
+#utop> {address1 = "a1"; address2="a2"; city="New York"; state="New York"; zip="12345"};;
+
+
+Adding meaning to primitive types:
+Tiny types and interchangibility, consider following types
+  emailAddress = string;
+  state = string;
+  zip = string;
+Now we wouldn't like to interchange these, would we?
+Ideally we would have lot of tiny types to not mix them up.
+Here's how (also known as single case union types)
+
+type emailAddress = EmailAddress of string
+type zipcode = Zipcode of string
+type stateCode = StateCode of string
+Note: data constructors are capital case for first letter
+Note: Ocaml does not promote constructors as functions
+
