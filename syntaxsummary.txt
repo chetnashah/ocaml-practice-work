@@ -164,6 +164,38 @@ type cardPlayed = {
      face: face;
 }
 
+* Writing good toString functions for algebraic data types:
+
+1. for variant/tagged union/discriminated unions/sum types, use pattern matching to write a
+good toString function
+
+e.g.
+type animal = Cat of int
+     	    | Dog of int
+	    | Bear of String
+	    | Fish
+
+let animalPrinter (ani: animal) = match ani with
+    		      	| Cat cn -> "Animal is a cat with num : " ^ (string_of_int cn)
+			| Dog dn -> "Animal is a dog with nuum : " ^ (string_of_int dn)
+			| Bear st -> "Animal is a bear with st : " ^ st
+			| Fish -> "Animal is a fish with no other arg"
+
+(* ^ is ocaml's way of joining strings together *)
+
+2. for record/tuple pattern matching the pattern should look like a record/tuple
+e.g/
+# type state = {
+     lcd: int; (* last computation done *)
+     vpr: int; (* value printed on screen *)
+  }
+
+# let statePrinter (stt: state) = match stt with
+    		       	      | { lcd = a; vpr = d; } -> "Found lcd with " ^ (string_of_int a) ^ " Found vpr with " ^ (string_of_int d)
+
+# let sti = { lcd = 4; vpr = 0; };;
+
+# statePrinter sti;;
 
 -------------------------------------- Expressions -----------------------------------
 
