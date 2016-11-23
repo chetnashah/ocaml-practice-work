@@ -1,0 +1,26 @@
+
+
+* intro-ocaml:
+
+** expressions are computations,
+** values are results of computations,
+** types are sets of values
+** Every Expression and value has a type
+
+* core expression syntax:
+
+** values
+** id
+** e1 op e2
+** id e1 e2 e3 (function application)
+** let id = e1 in e2 (let binding)
+** if e1 then e2 else e3
+** (e) (parenthesized epression)
+** (e: t)
+
+* A note on parentheses
+
+** arguments do not need parentheses, application associates to left
+** you do have to worry abt grouping e.g. f x y z is not same as f x (y z) 
+
+

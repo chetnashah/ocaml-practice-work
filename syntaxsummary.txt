@@ -84,6 +84,14 @@ type constructor is always Uppercase letter followed by "of" followed by argumen
 type constructor that does not need any argument is also known as a constant constructor
 and can be directly treated as values
 
+list of a single type:
+type pincodes = int list;;
+type guests = int string;;
+
+unnamed tuples/regular tuples :
+type myType = int * string;;
+type point3d = float * float * float;;
+
 tuple/record(named tuples) types(product types) :
 (Note: field names should be lower case)
 type personalName = {

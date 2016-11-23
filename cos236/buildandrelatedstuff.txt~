@@ -1,0 +1,3 @@
+
+$ocamlbuild hello.d.byte
+( hello is name of prog, d is for debug, byte is for IR code)

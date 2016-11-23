@@ -1,4 +1,9 @@
 
+
+What would you call something takes types and makes new types ?
+A type constructor
+Maybe is a type constructor, Maybe Int is a type
+
 What is referential transperency ?
 whenever you have an equality of expression,
 you can memoize lhs for its result in a table instead of doing actual computation,
@@ -17,6 +22,7 @@ A faithful functor is injective on hom-sets
 A fully faithful functor is isomorphism on hom-sets
 A constant functor is ...
 An endofunctor is functor mapping structure into same category
+The Category Cat is where categories are objects and functors are morphisms
 
 Type constructors(return) map types(objects) to different category (a -> Maybe a)
 but we also have to map hom-set to different category ( (a->b) -> (Maybe a -> Maybe b) )

@@ -1,0 +1,5 @@
+"Rule: ocaml: ml -> cmo & cmi (%=hello )": "\025\234\198\239k2\220N*\200F\254\211I\171\026"
+"Rule: ocaml: ml -> d.cmo & cmi (%=hello )": "u\225/&fu\027\164C0\231\1861&\016%"
+"Rule: ocaml dependencies ml (%=hello )": "\211)\149\011\175\006j\211\159/\007\138\192#\233S"
+"Resource: /home/jayshah/ocamlwork/cos236/hello.ml": "q\152_\224$!\006K\199\1308\007\237\b\191\235"
+"Rule: ocaml: d.cmo* -> d.byte (%=hello )": "\206\007>\207S\242\243\025^\185\172\149\223\159\1984"

@@ -1,0 +1,8 @@
+
+$ ocamlbuild hello.d.byte
+( hello is name of prog,
+  .d is for debug, you can use .p for profiled,
+  .byte is for IR code, .native for native code
+ )
+
+

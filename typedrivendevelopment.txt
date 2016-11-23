@@ -37,3 +37,87 @@ It is a good idea to write toString/render functions using pattern matching
 like toString functions for java POJOs which clearly specify
 the meaning of type with its arguments.
 Also unlike java POJOs fp types have explicit public immutable fields
+
+Type-directed programming methodology:
+
+1. write down name of the function and types of its arguments
+   and results
+2. Write a comment that explains its purpose and any preconditions
+3. Write several examples of what your function does.
+4. Write body of function (hard part)
+5. Turn your examples into tests
+
+The place where types really help is hard part,
+(Since it is substitution of expressions all the way),
+It involves two conceptual activities :
+   * Deconstruct (tear apart and analyze)
+   * Construct (build) the output values
+
+Types help because each comes with a predefined set of values.
+So that you can pattern match for all cases.
+Types help us search for and identify complete solutions
+to the programming problem at hand.
+
+If vs pattern matching to deconstruct data:
+Pattern matching is a general paradigm
+that programmers use to deconstruct data.
+
+Pattern matching on booleans :
+
+(* convert a boolean to an integer *)
+let bool_to_int (b: bool) : int =
+    match b with
+    | true -> 1
+    | false -> 0
+;;
+
+Pattern matching on tuples :
+(* create a string from the first two components, separated by a space *)
+let full_name (name_and_age : string * string * int) : string =
+  match name_and_age with
+      | (first, last, _) -> first ^ " " ^ last
+      ;;
+
+The unit type :
+only one value "unit",
+Even thought it has no information content,
+it is quite heavily used. Whenever an expression has
+an effect on the outside world, but returns no interesting data,
+e.g. printing to screen.
+Assertions are also expressions with type unit
+
+unit as input type:
+Functions that already contain all the data they need
+to execute
+
+Pattern match on unit:
+Poor style :
+let hello_world (x:unit) : unit =
+  match x with
+     | () -> print_string "hello world\n"
+     ;;
+
+Since there is only one branch on the match expression,
+you can promote it to argument position (like let based tuple pattern matching)
+
+Better style:
+let hello_world () : unit =
+  print_string "hello world\n"
+  ;;
+
+Seperating several unit value expressions in a row,
+Instead of successive pattern matching, use semi colon to
+seperate one unit value expression from next :
+
+let hello_world () : unit =
+  print_string "hello";
+    print_string " ";
+      print_endline "world"
+      ;;
+
+
+Option type :
+An option type written as t option, contains two sorts of values,
+the value None and the value Some v where v is a value of type t.
+
+
