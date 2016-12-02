@@ -1,5 +1,46 @@
 
 
+Haskell patternmatching(case expressions) and guards:
+Pattern matching is useful for structural induction,
+Case of would mostly be used when you want to branch depending
+on structure/types(matching on structures)
+etc. instead of boolean conditions.
+e.g.
+
+```
+case mapping of
+  Constant v -> const v
+  Function f -> map f
+```
+
+When you are branching based on boolean conditions, e.g. by if, else, elseif
+guards are useful,(mostly matching on values giving booleans etc.) e.g.
+
+```
+abs n
+  | n < 0 = -n
+  | otherwise = n
+```
+
+Both can used also in conjunction and complement each other,
+for e.g. you can first make decisions depending on structure,
+then depending on values or vice versa
+
+Using where :
+When you have repeated calculations in guard, it is good idea to
+give them a name before doing guards.
+
+e.g.
+```
+    bmiTell :: (RealFloat a) => a -> a -> String
+    bmiTell weight height
+    	    | bmi <= 18.5 = "You're underweight, you emo, you!"
+	    | bmi <= 25.0 = "You're supposedly normal"
+	    | bmi <= 30.0 = "You're fat! Lose some weight, fatty!"
+	    | otherwise   = "You're a whale, congratulations!"
+	    where bmi = weight / height ^ 2
+```
+
 What would you call something takes types and makes new types ?
 A type constructor
 Maybe is a type constructor, Maybe Int is a type

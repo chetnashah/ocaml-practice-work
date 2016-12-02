@@ -121,3 +121,5 @@ An option type written as t option, contains two sorts of values,
 the value None and the value Some v where v is a value of type t.
 
 
+The reason pattern matching is useful is structural induction on Constructors
+and length of the terms

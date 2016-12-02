@@ -1,4 +1,61 @@
 
+Essential sublanguage of Ocaml (Everything is an expression):
+
+expr ::= | c 	      	       // constant
+     	 | (op)		       // parenthesized expression
+	 | x		       // named object
+	 | (e1, e2, .. en)	// tuples
+     	 | C e
+	 | e1 e2 e3 .. en	// function application
+	 | fun x -> e		// lambdas or func definition(mul arg)
+	 | function pi -> ei    // lambdas or function definition
+	 | let x = e1 in e2	// let expressions
+	 | match e0 with pi -> ei // match expressions
+	 | if e1 then e2 else e3 // conditional expression
+	 | while e1 do e2 done	 // conditional expression
+	 | e1 :: e2    	  	 // lists
+	 | Constr e1		 // custom type vales
+	 | (e1: t1)		// parenthesized expression with type constraint
+	 | begin e1 end		// parenthesized expression
+	 | e1 infix-op e2
+	 
+Expressions evaluate to values in a dynamic environment,
+one enriched by name value bindings.
+Values are syntactic subset of expressions :
+
+v ::= c | (op) | (v1, v2, v3 ... vn)
+      | C v
+      | fun x -> e // lambdas(abstractions) are function values
+
+Time travel and function closures :
+A function value is really a data struct
+that has two parts:
+1. The code (obviously)
+2. the environment that was current when function was
+   defined(lexical scope). Which gives meaning to all the free
+   variables of the function body.
+
+A function application :
+- evaluates the code part of the closure
+- in  the environ ment part of closure(which is relevant if free variables are present)
+- extended to bind the function argument
+
+With lexical scoping, well-typed programs are
+guaranteed never to have any variables in the code
+body other than function argument and variables bound by
+closure environment
+
+Recursion with auxillary functions:
+sometimes we might need to use auxillary functions that hold
+extra argument(which is initially empty) carrying state
+of currently constructed answer structure
+from matching on original input data structure,
+the trick is to return the constructed structure at base case.
+
+i.e. until the base case hits, the modified structure is present in
+argument, on hitting base case,the modified strucuture is in
+return value of function
+
 global let delcarations :
 let abc = 1;
 
@@ -42,6 +99,8 @@ programmer annotating the type helps compiler syntax is like following
 let add (x:int) (y:int) = x + y;;
 
 Pattern matching :
+The reason pattern matching is useful because of
+structural induction on the length of terms and constructors
 pattern matching applies on values(also function values - just like in lambda calculus)
 lamdba style directly starts with pattern matching without letting us specify params , in match style we let specify param along with fn and also pattern match with same name( here v)
 
@@ -64,13 +123,54 @@ function p1 -> expr1 | p2 -> expr2 |.... | pn -> exprn;
 also equivalent to
 function exp -> match exp with | p1 -> expr1 | p2 -> expr2 |....| pn -> exprn 
 
-"new bindings/variable declarations happen in pattern matching"
+
+Total functions and partial functions in case functions
+defined using pattern matching
+e.g.
+let (doubler: int -> int) = function x -> x * 2;;
+is total, i.e. is defined for all ints
+let pngpng = function p -> "pong"
+is total, i.e. is defined fo all arguments a'
+
+Here is a function based on pattern matching that is non-total/partial
+let pnp = function "ping" -> "pong
+which is defined only for input "ping"
+and will give Match_failure for all other cases
+
+"new bindings/variable declarations happen in pattern matching
+in case unbound variables are encountered in pattern (which is
+by the way how let declarations work it seems)"
 
 Pattern matching can happen also without using match or function keywords,
 simply using 'let' which does bindings of unbound vars in pattern side of let
-binding
+binding (usually useful for single case pattern matchings)
 e.g. let (x,y) = 2,3;; // binds x to 2, and y to 3
 let head :: 2 :: _ = [1;2;3];; // binds head to 1
+
+
+Naming a value being matched using "as" (Good style) :
+During pattern matching, it is sometimes useful to name
+part or all of pattern. (Also helps avoid reconstruction sometimes)
+"as" keyword in pattern matching, is greedy and takes as many terms to left
+as possible unless you put a bracket.
+Let's say we have :
+# let rec compress = function
+  | a :: (b :: _ as t) -> if a = b then compress t else a :: compress t
+  | smaller -> smaller;;
+
+One would have thought t is bound to _ but instead,
+Here t is bound to b :: _
+
+here is another example of comparing rationals:
+let min_rat pr = match pr with
+| ((_,0), p2) -> p2
+| (p1, (_,0)) -> p1
+| (((n1, d1) as r1),((n2, d2) as r2)) ->
+    if (n1 * d2) < (n2 * d1) then r1 else r2;;
+
+
+
+
 
 
 ----------  Types and pattern matchin -------------------------
