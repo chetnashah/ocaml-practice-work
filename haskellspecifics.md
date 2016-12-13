@@ -1,5 +1,21 @@
 
 
+Any thing that you give a name in haskell,
+e.g. using let where,gets evaluated at most once(on demand)
+and memoized for future usages.
+
+Numerical types in haskell :
+Integral : whole numbers only, two instances -> Integer and Int
+Fractional or RealFrac - tional types
+  Rational : values always specifed as ratio of two Integers e.g. n = n % 1
+  Double   : double precision floating point numbers
+
+Real : Integral + RealFrac
+
+Num encompasses Real + Complex (respects Eq)
+Real ecnompasses Real (respects Eq, Ord)
+
+
 Haskell patternmatching(case expressions) and guards:
 Pattern matching is useful for structural induction,
 Case of would mostly be used when you want to branch depending
