@@ -81,12 +81,45 @@ A constant functor is ...
 An endofunctor is functor mapping structure into same category
 The Category Cat is where categories are objects and functors are morphisms
 
+Haskell types declared using Data should be in capital case.
+Haskell types declared using type are just type aliases
+
 Type constructors(return) map types(objects) to different category (a -> Maybe a)
 but we also have to map hom-set to different category ( (a->b) -> (Maybe a -> Maybe b) )
 which is where we make instance Functors of various types
 
+Some things act as both type and value constructors,
+most common examples are :
+Think of them as defined like :
+```
+data [a] = [] | a : [a]  -- note this will not work on repl etc.
+```
+[Int] is a case where [] is a type constructor
+```
+-- haskell style
+Prelude> type Mylist = [Int]
+
+-- Ocaml style (different style of type constructor)
+# type mylist = int list
+```
+but [2] is the case where [] is a value constructor (Same in Ocaml)
+
+Similarly (,) the tuple builder is also a both type and value constructor
+```
+--haskell style
+Prelude> type Mytuple = (String, String)
+
+-- Ocaml style (different type constructor)
+# type mytuple = string * string
+```
+and ("hi", "jay") is an example of value construction by (,)
+
 Product types are not symmetric :
 * (a,b) is not same as (b,a), type of earlier is a * b and that of latter is b * a
+
+Only values have types,
+types have kinds,
+etc. etc.
 
 Sum types are not symmetric :
 * Either a b is not same Either b a

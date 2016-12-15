@@ -1,0 +1,5 @@
+"Rule: ocaml: ml -> d.cmo & cmi (%=main )": "\177\2061\166t}\240\132\214;\1386*[\225\168"
+"Resource: /home/jayshah/ocamlwork/main.ml": "\159q\174\1466\b\253H\209K?\246\007T\194\182"
+"Rule: ocaml: ml -> cmo & cmi (%=main )": "\014\023C\192\210\016\026TXN\006A\186X\222 "
+"Rule: ocaml dependencies ml (%=main )": "2\167\028E\253\"\224w\187\1297\156\163\168\193^"
+"Rule: ocaml: d.cmo* -> d.byte (%=main )": "\183a\143\221\249\139\128\154\226\178\209\249\0068\130\171"
