@@ -200,6 +200,13 @@ type personalName = {
      lastName: string;
 }
 
+Note: In Ocaml, order of named tuples does not matter,
+i.e. {name: "hi"; initial: "K"; lastName: "Doe"}
+is same as
+{ initial: "K"; name: "hi"; lastName: "Doe"}
+or same as
+{ lastname: "Doe"; initial: "K"; name: "hi" }
+
 variant(Sum) types:
 e.g.
 type suit = Spades | Hearts | Diamonds | Clubs;; constant constructors/enums
