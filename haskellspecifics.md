@@ -195,3 +195,16 @@ data Shape = Circle Float Float Float
      	   | Rectangle Float Float Float Float
 ```
 
+* TypeClasses 101
+A typeclass is sort of interface that defines some behaviour
+If a type is part of a typeclass, that means that it
+supports and implements the behaviour the typeclass describes.
+
+Some examples of typeclasses are :
+EQ : support equality checking
+SHOW : supports string representation
+ORD : supports ordering
+READ : supports readability of given type from string
+ENUM : supports enumerability or can be listed e.g. Bool, Char, Int
+Bounded : members have an upper and lower bound.
+Num : Its members have property of being able to act like numbers
