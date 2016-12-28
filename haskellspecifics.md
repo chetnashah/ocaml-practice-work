@@ -208,3 +208,15 @@ READ : supports readability of given type from string
 ENUM : supports enumerability or can be listed e.g. Bool, Char, Int
 Bounded : members have an upper and lower bound.
 Num : Its members have property of being able to act like numbers
+
+
+Well known kinds of type constructors/types:
+:k Either = * -> * -> *
+:k Maybe = * -> *
+:k (,) = * -> * -> *
+:k [] = * -> *
+:k (Int -> Int) = *
+:k Int = *
+
+Single * usually represents a type
+And * -> * usually represents a type constructor
