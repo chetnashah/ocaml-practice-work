@@ -169,7 +169,19 @@ let min_rat pr = match pr with
     if (n1 * d2) < (n2 * d1) then r1 else r2;;
 
 
+Evaluation order in chained let constructs :
+e.g.
+ let x = 1 in let y = x+2 in let z = y+3 in z;;
 
+Note that here the order of evaluation is also left-to-right.
+(It is always left-to-right in every chain of let constructs.)
+
+Scoping in let expressions :
+OCaml scoping rules are the usual ones, i.e., names refer to the nearest (innermost) definition. In the expression:
+
+let v = e1 in e2
+
+The variable v isn't visible (i.e., cannot be named) in e1. If (by chance) a variable of that name appears in e1, it must refer to some outer definition of (a different) v
 
 
 
@@ -311,6 +323,20 @@ e.g/
 # let sti = { lcd = 4; vpr = 0; };;
 
 # statePrinter sti;;
+
+
+
+
+---- Subtyping and inclusion polymorphism in Ocaml(More in Ora book --
+Subtyping makes it possible for an object of some type to be
+considered and used as an object of other type.
+Subtyping relation is only meaningful between objects,
+it can only be expressed between objects.
+
+Also unlike mainstream oo languages such as C++, Java, SmallTalk
+subtyping and inheritance are different concepts in Ocaml.
+
+
 
 -------------------------------------- Expressions -----------------------------------
 
