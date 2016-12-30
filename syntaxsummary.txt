@@ -383,3 +383,42 @@ bcoz let binding is nothing but let pattern = expr;;
 Similarly function with multiple cases of pattern matchin is an expr
 
 
+-------------Ocaml structures and modules ---------------
+Module : ?
+
+Structure : Structure packages together related definitions 
+into a namespace.
+(e.g.
+definitions of data type and associated operations over 
+that type e.g. stack, queue etc). and it is introduced by
+syntax : 
+
+module ModuleName [:t] = 
+struct
+  definitions 
+end
+
+Signature : Signature are interfaces for structures.
+A signature specifies which components of structure are 
+accessible from outside(can hide some) and with which type.
+syntax :
+
+module type SignatureName = sig 
+  type specifications 
+end
+
+Modules and files :
+.ml and .mli files are automatically wrapped in 
+struct and sig respectively e.g.
+If myfile.ml has contents DM  [and myfile.mli has contents DS]
+then OCaml compiler behaves essentially as though: 
+
+module Myfile [: sig DS end] = 
+struct
+  DM
+end
+
+Note:  no struct or sig keywords, no naming of module or module type 
+Note:  comments to client in .mli
+, comments to implementers in .ml
+
