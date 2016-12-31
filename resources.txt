@@ -1,0 +1,14 @@
+
+Opam is package manager for Ocaml
+Basic usage at :
+https://opam.ocaml.org/doc/Usage.html
+
+Merlin is central to good editor support for Ocaml
+
+emacs configuration at :
+https://github.com/ocaml/merlin/wiki/emacs-from-scratch
+
+setting up makefiles for different kinds of projects:
+https://github.com/ocaml/ocamlbuild/tree/master/examples
+
+
