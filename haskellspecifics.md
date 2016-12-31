@@ -211,12 +211,13 @@ Num : Its members have property of being able to act like numbers
 
 
 Well known kinds of type constructors/types:
+
 :k Either = * -> * -> *
 :k Maybe = * -> *
 :k (,) = * -> * -> *
 :k [] = * -> *
 :k (Int -> Int) = *
 :k Int = *
-
+```
 Single * usually represents a type
 And * -> * usually represents a type constructor
