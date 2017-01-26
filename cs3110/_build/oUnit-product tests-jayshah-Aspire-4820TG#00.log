@@ -1,0 +1,61 @@
+2017-01-01T08:06:19+00:00 jayshah-Aspire-4820TG#00 I: Runner: processes
+2017-01-01T08:06:19+00:00 jayshah-Aspire-4820TG#00 I: Chooser: simple
+2017-01-01T08:06:19+00:00 jayshah-Aspire-4820TG#00 I: Configuration suite_name = "product tests"
+2017-01-01T08:06:19+00:00 jayshah-Aspire-4820TG#00 I: Configuration cache_filename = "/home/jayshah/ocamlwork/cs3110/_build/oUnit-$(suite_name).cache"
+2017-01-01T08:06:19+00:00 jayshah-Aspire-4820TG#00 I: Configuration display = "true"
+2017-01-01T08:06:19+00:00 jayshah-Aspire-4820TG#00 I: Configuration results_style_1_X = "false"
+2017-01-01T08:06:19+00:00 jayshah-Aspire-4820TG#00 I: Configuration verbose = "false"
+2017-01-01T08:06:19+00:00 jayshah-Aspire-4820TG#00 I: Configuration health_check_interval = "1."
+2017-01-01T08:06:19+00:00 jayshah-Aspire-4820TG#00 I: Configuration testdata_dir = "none"
+2017-01-01T08:06:19+00:00 jayshah-Aspire-4820TG#00 I: Configuration chooser = "simple"
+2017-01-01T08:06:19+00:00 jayshah-Aspire-4820TG#00 I: Configuration output_html_dir = "none"
+2017-01-01T08:06:19+00:00 jayshah-Aspire-4820TG#00 I: Configuration processes_kill_period = "5."
+2017-01-01T08:06:19+00:00 jayshah-Aspire-4820TG#00 I: Configuration runner = "processes"
+2017-01-01T08:06:19+00:00 jayshah-Aspire-4820TG#00 I: Configuration shards = "2"
+2017-01-01T08:06:19+00:00 jayshah-Aspire-4820TG#00 I: Configuration processes_grace_period = "5."
+2017-01-01T08:06:19+00:00 jayshah-Aspire-4820TG#00 I: Configuration log_encoding = "utf-8"
+2017-01-01T08:06:19+00:00 jayshah-Aspire-4820TG#00 I: Configuration output_junit_file = "none"
+2017-01-01T08:06:19+00:00 jayshah-Aspire-4820TG#00 I: Configuration output_file = "/home/jayshah/ocamlwork/cs3110/_build/oUnit-$(suite_name)-$(shard_id).log"
+2017-01-01T08:06:19+00:00 jayshah-Aspire-4820TG#00 I: Using 2 workers maximum.
+2017-01-01T08:06:19+00:00 jayshah-Aspire-4820TG#00 I: Starting worker number jayshah-Aspire-4820TG#01.
+2017-01-01T08:06:19+00:00 jayshah-Aspire-4820TG#00 I: Worker jayshah-Aspire-4820TG#01 started.
+2017-01-01T08:06:19+00:00 jayshah-Aspire-4820TG#00 I: Starting worker number jayshah-Aspire-4820TG#02.
+2017-01-01T08:06:19+00:00 jayshah-Aspire-4820TG#00 I: Worker jayshah-Aspire-4820TG#02 started.
+2017-01-01T08:06:19+00:00 jayshah-Aspire-4820TG#00 I: Still 2 tests running : product tests:1:multiple with 1 returns itself , product tests:0:multiply with zero returns 0 .
+2017-01-01T08:06:19+00:00 jayshah-Aspire-4820TG#00 I: 2 tests running: product tests:1:multiple with 1 returns itself , product tests:0:multiply with zero returns 0 .
+2017-01-01T08:06:19+00:00 jayshah-Aspire-4820TG#01 I: Start test product tests:0:multiply with zero returns 0 .
+2017-01-01T08:06:19+00:00 jayshah-Aspire-4820TG#00 I: Still 2 tests running : product tests:1:multiple with 1 returns itself , product tests:0:multiply with zero returns 0 .
+2017-01-01T08:06:19+00:00 jayshah-Aspire-4820TG#00 I: 2 tests running: product tests:1:multiple with 1 returns itself , product tests:0:multiply with zero returns 0 .
+2017-01-01T08:06:19+00:00 jayshah-Aspire-4820TG#02 I: Start test product tests:1:multiple with 1 returns itself .
+2017-01-01T08:06:19+00:00 jayshah-Aspire-4820TG#00 I: Still 2 tests running : product tests:1:multiple with 1 returns itself , product tests:0:multiply with zero returns 0 .
+2017-01-01T08:06:19+00:00 jayshah-Aspire-4820TG#00 I: 2 tests running: product tests:1:multiple with 1 returns itself , product tests:0:multiply with zero returns 0 .
+2017-01-01T08:06:19+00:00 jayshah-Aspire-4820TG#01 I: Test product tests:0:multiply with zero returns 0  is successful.
+2017-01-01T08:06:19+00:00 jayshah-Aspire-4820TG#00 I: Still 2 tests running : product tests:1:multiple with 1 returns itself , product tests:0:multiply with zero returns 0 .
+2017-01-01T08:06:19+00:00 jayshah-Aspire-4820TG#00 I: 2 tests running: product tests:1:multiple with 1 returns itself , product tests:0:multiply with zero returns 0 .
+2017-01-01T08:06:19+00:00 jayshah-Aspire-4820TG#01 I: End test product tests:0:multiply with zero returns 0 .
+2017-01-01T08:06:19+00:00 jayshah-Aspire-4820TG#00 I: Still 2 tests running : product tests:1:multiple with 1 returns itself , product tests:0:multiply with zero returns 0 .
+2017-01-01T08:06:19+00:00 jayshah-Aspire-4820TG#00 I: 2 tests running: product tests:1:multiple with 1 returns itself , product tests:0:multiply with zero returns 0 .
+2017-01-01T08:06:19+00:00 jayshah-Aspire-4820TG#02 I: Test product tests:1:multiple with 1 returns itself  is successful.
+2017-01-01T08:06:19+00:00 jayshah-Aspire-4820TG#00 I: Still 1 tests running : product tests:1:multiple with 1 returns itself .
+2017-01-01T08:06:19+00:00 jayshah-Aspire-4820TG#00 I: 1 tests running: product tests:1:multiple with 1 returns itself .
+2017-01-01T08:06:19+00:00 jayshah-Aspire-4820TG#02 I: End test product tests:1:multiple with 1 returns itself .
+2017-01-01T08:06:19+00:00 jayshah-Aspire-4820TG#00 I: Still 1 tests running : product tests:1:multiple with 1 returns itself .
+2017-01-01T08:06:19+00:00 jayshah-Aspire-4820TG#00 I: 1 tests running: product tests:1:multiple with 1 returns itself .
+2017-01-01T08:06:19+00:00 jayshah-Aspire-4820TG#00 I: 0 tests running: .
+2017-01-01T08:06:19+00:00 jayshah-Aspire-4820TG#00 I: Worker jayshah-Aspire-4820TG#01 has ended.
+2017-01-01T08:06:19+00:00 jayshah-Aspire-4820TG#00 I: Worker jayshah-Aspire-4820TG#02 has ended.
+2017-01-01T08:06:19+00:00 jayshah-Aspire-4820TG#00 I: Used 2 worker during test execution.
+2017-01-01T08:06:19+00:00 jayshah-Aspire-4820TG#00 I: Run 1 tests with shard jayshah-Aspire-4820TG#02.
+2017-01-01T08:06:19+00:00 jayshah-Aspire-4820TG#00 I: Run 1 tests with shard jayshah-Aspire-4820TG#01.
+2017-01-01T08:06:19+00:00 jayshah-Aspire-4820TG#00 I: ==============
+2017-01-01T08:06:19+00:00 jayshah-Aspire-4820TG#00 I: Summary:
+2017-01-01T08:06:19+00:00 jayshah-Aspire-4820TG#00 I: Test product tests:1:multiple with 1 returns itself  is successful.
+2017-01-01T08:06:19+00:00 jayshah-Aspire-4820TG#00 I: Test product tests:0:multiply with zero returns 0  is successful.
+2017-01-01T08:06:19+00:00 jayshah-Aspire-4820TG#00 I: Ran: 2 tests in: 0.11 seconds.
+2017-01-01T08:06:19+00:00 jayshah-Aspire-4820TG#00 I: Cases: 2.
+2017-01-01T08:06:19+00:00 jayshah-Aspire-4820TG#00 I: Tried: 2.
+2017-01-01T08:06:19+00:00 jayshah-Aspire-4820TG#00 I: Errors: 0.
+2017-01-01T08:06:19+00:00 jayshah-Aspire-4820TG#00 I: Failures: 0.
+2017-01-01T08:06:19+00:00 jayshah-Aspire-4820TG#00 I: Skip: 0.
+2017-01-01T08:06:19+00:00 jayshah-Aspire-4820TG#00 I: Todo: 0.
+2017-01-01T08:06:19+00:00 jayshah-Aspire-4820TG#00 I: Timeout: 0.

@@ -1,0 +1,69 @@
+2017-01-01T07:57:44+00:00 jayshah-Aspire-4820TG#00 I: Runner: processes
+2017-01-01T07:57:44+00:00 jayshah-Aspire-4820TG#00 I: Chooser: simple
+2017-01-01T07:57:44+00:00 jayshah-Aspire-4820TG#00 I: Configuration suite_name = "test suite for add"
+2017-01-01T07:57:44+00:00 jayshah-Aspire-4820TG#00 I: Configuration cache_filename = "/home/jayshah/ocamlwork/cs3110/_build/oUnit-$(suite_name).cache"
+2017-01-01T07:57:44+00:00 jayshah-Aspire-4820TG#00 I: Configuration display = "true"
+2017-01-01T07:57:44+00:00 jayshah-Aspire-4820TG#00 I: Configuration results_style_1_X = "false"
+2017-01-01T07:57:44+00:00 jayshah-Aspire-4820TG#00 I: Configuration verbose = "false"
+2017-01-01T07:57:44+00:00 jayshah-Aspire-4820TG#00 I: Configuration health_check_interval = "1."
+2017-01-01T07:57:44+00:00 jayshah-Aspire-4820TG#00 I: Configuration testdata_dir = "none"
+2017-01-01T07:57:44+00:00 jayshah-Aspire-4820TG#00 I: Configuration chooser = "simple"
+2017-01-01T07:57:44+00:00 jayshah-Aspire-4820TG#00 I: Configuration output_html_dir = "none"
+2017-01-01T07:57:44+00:00 jayshah-Aspire-4820TG#00 I: Configuration processes_kill_period = "5."
+2017-01-01T07:57:44+00:00 jayshah-Aspire-4820TG#00 I: Configuration runner = "processes"
+2017-01-01T07:57:44+00:00 jayshah-Aspire-4820TG#00 I: Configuration shards = "2"
+2017-01-01T07:57:44+00:00 jayshah-Aspire-4820TG#00 I: Configuration processes_grace_period = "5."
+2017-01-01T07:57:44+00:00 jayshah-Aspire-4820TG#00 I: Configuration log_encoding = "utf-8"
+2017-01-01T07:57:44+00:00 jayshah-Aspire-4820TG#00 I: Configuration output_junit_file = "none"
+2017-01-01T07:57:44+00:00 jayshah-Aspire-4820TG#00 I: Configuration output_file = "/home/jayshah/ocamlwork/cs3110/_build/oUnit-$(suite_name)-$(shard_id).log"
+2017-01-01T07:57:44+00:00 jayshah-Aspire-4820TG#00 I: Using 2 workers maximum.
+2017-01-01T07:57:44+00:00 jayshah-Aspire-4820TG#00 I: Starting worker number jayshah-Aspire-4820TG#01.
+2017-01-01T07:57:44+00:00 jayshah-Aspire-4820TG#00 I: Worker jayshah-Aspire-4820TG#01 started.
+2017-01-01T07:57:44+00:00 jayshah-Aspire-4820TG#00 I: Starting worker number jayshah-Aspire-4820TG#02.
+2017-01-01T07:57:44+00:00 jayshah-Aspire-4820TG#00 I: Worker jayshah-Aspire-4820TG#02 started.
+2017-01-01T07:57:44+00:00 jayshah-Aspire-4820TG#00 I: Still 2 tests running : test suite for add:1:add 7 1, test suite for add:0:add 1 2.
+2017-01-01T07:57:44+00:00 jayshah-Aspire-4820TG#00 I: 2 tests running: test suite for add:1:add 7 1, test suite for add:0:add 1 2.
+2017-01-01T07:57:44+00:00 jayshah-Aspire-4820TG#01 I: Start test test suite for add:0:add 1 2.
+2017-01-01T07:57:44+00:00 jayshah-Aspire-4820TG#00 I: Still 2 tests running : test suite for add:1:add 7 1, test suite for add:0:add 1 2.
+2017-01-01T07:57:44+00:00 jayshah-Aspire-4820TG#00 I: 2 tests running: test suite for add:1:add 7 1, test suite for add:0:add 1 2.
+2017-01-01T07:57:44+00:00 jayshah-Aspire-4820TG#02 I: Start test test suite for add:1:add 7 1.
+2017-01-01T07:57:44+00:00 jayshah-Aspire-4820TG#00 I: Still 2 tests running : test suite for add:1:add 7 1, test suite for add:0:add 1 2.
+2017-01-01T07:57:44+00:00 jayshah-Aspire-4820TG#00 I: 2 tests running: test suite for add:1:add 7 1, test suite for add:0:add 1 2.
+2017-01-01T07:57:44+00:00 jayshah-Aspire-4820TG#02 E: Test test suite for add:1:add 7 1 has failed.
+2017-01-01T07:57:44+00:00 jayshah-Aspire-4820TG#02 E: not equal in test test suite for add:1:add 7 1.
+2017-01-01T07:57:44+00:00 jayshah-Aspire-4820TG#02 E: (Program not linked with -g, cannot print stack backtrace)
+2017-01-01T07:57:44+00:00 jayshah-Aspire-4820TG#02 E: 
+2017-01-01T07:57:44+00:00 jayshah-Aspire-4820TG#00 I: Still 2 tests running : test suite for add:1:add 7 1, test suite for add:0:add 1 2.
+2017-01-01T07:57:44+00:00 jayshah-Aspire-4820TG#00 I: 2 tests running: test suite for add:1:add 7 1, test suite for add:0:add 1 2.
+2017-01-01T07:57:44+00:00 jayshah-Aspire-4820TG#02 I: End test test suite for add:1:add 7 1.
+2017-01-01T07:57:44+00:00 jayshah-Aspire-4820TG#00 I: Still 2 tests running : test suite for add:1:add 7 1, test suite for add:0:add 1 2.
+2017-01-01T07:57:44+00:00 jayshah-Aspire-4820TG#00 I: 2 tests running: test suite for add:1:add 7 1, test suite for add:0:add 1 2.
+2017-01-01T07:57:44+00:00 jayshah-Aspire-4820TG#00 I: Still 1 tests running : test suite for add:0:add 1 2.
+2017-01-01T07:57:44+00:00 jayshah-Aspire-4820TG#00 I: 1 tests running: test suite for add:0:add 1 2.
+2017-01-01T07:57:44+00:00 jayshah-Aspire-4820TG#01 I: Test test suite for add:0:add 1 2 is successful.
+2017-01-01T07:57:44+00:00 jayshah-Aspire-4820TG#00 I: Still 1 tests running : test suite for add:0:add 1 2.
+2017-01-01T07:57:44+00:00 jayshah-Aspire-4820TG#00 I: 1 tests running: test suite for add:0:add 1 2.
+2017-01-01T07:57:44+00:00 jayshah-Aspire-4820TG#01 I: End test test suite for add:0:add 1 2.
+2017-01-01T07:57:44+00:00 jayshah-Aspire-4820TG#00 I: Still 1 tests running : test suite for add:0:add 1 2.
+2017-01-01T07:57:44+00:00 jayshah-Aspire-4820TG#00 I: 1 tests running: test suite for add:0:add 1 2.
+2017-01-01T07:57:44+00:00 jayshah-Aspire-4820TG#00 I: 0 tests running: .
+2017-01-01T07:57:44+00:00 jayshah-Aspire-4820TG#00 I: Worker jayshah-Aspire-4820TG#02 has ended.
+2017-01-01T07:57:45+00:00 jayshah-Aspire-4820TG#00 I: Worker jayshah-Aspire-4820TG#01 has ended.
+2017-01-01T07:57:45+00:00 jayshah-Aspire-4820TG#00 I: Used 2 worker during test execution.
+2017-01-01T07:57:45+00:00 jayshah-Aspire-4820TG#00 I: Run 1 tests with shard jayshah-Aspire-4820TG#02.
+2017-01-01T07:57:45+00:00 jayshah-Aspire-4820TG#00 I: Run 1 tests with shard jayshah-Aspire-4820TG#01.
+2017-01-01T07:57:45+00:00 jayshah-Aspire-4820TG#00 I: ==============
+2017-01-01T07:57:45+00:00 jayshah-Aspire-4820TG#00 I: Summary:
+2017-01-01T07:57:45+00:00 jayshah-Aspire-4820TG#00 I: Test test suite for add:0:add 1 2 is successful.
+2017-01-01T07:57:45+00:00 jayshah-Aspire-4820TG#00 E: Test test suite for add:1:add 7 1 has failed.
+2017-01-01T07:57:45+00:00 jayshah-Aspire-4820TG#00 E: not equal in test test suite for add:1:add 7 1.
+2017-01-01T07:57:45+00:00 jayshah-Aspire-4820TG#00 E: (Program not linked with -g, cannot print stack backtrace)
+2017-01-01T07:57:45+00:00 jayshah-Aspire-4820TG#00 E: 
+2017-01-01T07:57:45+00:00 jayshah-Aspire-4820TG#00 I: Ran: 2 tests in: 0.11 seconds.
+2017-01-01T07:57:45+00:00 jayshah-Aspire-4820TG#00 I: Cases: 2.
+2017-01-01T07:57:45+00:00 jayshah-Aspire-4820TG#00 I: Tried: 2.
+2017-01-01T07:57:45+00:00 jayshah-Aspire-4820TG#00 I: Errors: 0.
+2017-01-01T07:57:45+00:00 jayshah-Aspire-4820TG#00 I: Failures: 1.
+2017-01-01T07:57:45+00:00 jayshah-Aspire-4820TG#00 I: Skip: 0.
+2017-01-01T07:57:45+00:00 jayshah-Aspire-4820TG#00 I: Todo: 0.
+2017-01-01T07:57:45+00:00 jayshah-Aspire-4820TG#00 I: Timeout: 0.

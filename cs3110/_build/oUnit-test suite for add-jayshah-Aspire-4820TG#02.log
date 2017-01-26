@@ -1,0 +1,6 @@
+2017-01-01T07:57:44+00:00 jayshah-Aspire-4820TG#02 I: Start test test suite for add:1:add 7 1.
+2017-01-01T07:57:44+00:00 jayshah-Aspire-4820TG#02 E: Test test suite for add:1:add 7 1 has failed.
+2017-01-01T07:57:44+00:00 jayshah-Aspire-4820TG#02 E: not equal in test test suite for add:1:add 7 1.
+2017-01-01T07:57:44+00:00 jayshah-Aspire-4820TG#02 E: (Program not linked with -g, cannot print stack backtrace)
+2017-01-01T07:57:44+00:00 jayshah-Aspire-4820TG#02 E: 
+2017-01-01T07:57:44+00:00 jayshah-Aspire-4820TG#02 I: End test test suite for add:1:add 7 1.

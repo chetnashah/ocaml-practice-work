@@ -1,0 +1,6 @@
+
+open OUnit2
+open Add
+
+let tests = "hi"
+

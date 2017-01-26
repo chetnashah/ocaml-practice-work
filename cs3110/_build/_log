@@ -1,0 +1,12 @@
+### Starting build.
+# Target: src/product_test.ml.depends, tags: { extension:ml, file:src/product_test.ml, ocaml, ocamldep, package(oUnit), quiet }
+ocamlfind ocamldep -package oUnit -modules src/product_test.ml > src/product_test.ml.depends
+# Target: src/product.ml.depends, tags: { extension:ml, file:src/product.ml, ocaml, ocamldep, package(oUnit), quiet }
+ocamlfind ocamldep -package oUnit -modules src/product.ml > src/product.ml.depends
+# Target: src/product.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:src/product.cmo, file:src/product.ml, implem, ocaml, package(oUnit), quiet }
+ocamlfind ocamlc -c -package oUnit -I src -o src/product.cmo src/product.ml
+# Target: src/product_test.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:src/product_test.cmo, file:src/product_test.ml, implem, ocaml, package(oUnit), quiet }
+ocamlfind ocamlc -c -package oUnit -I src -o src/product_test.cmo src/product_test.ml
+# Target: src/product_test.byte, tags: { byte, dont_link_with, extension:byte, file:src/product_test.byte, link, ocaml, package(oUnit), program, quiet }
+ocamlfind ocamlc -linkpkg -package oUnit src/product.cmo src/product_test.cmo -o src/product_test.byte
+# Compilation successful.

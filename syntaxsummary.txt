@@ -183,7 +183,13 @@ let v = e1 in e2
 
 The variable v isn't visible (i.e., cannot be named) in e1. If (by chance) a variable of that name appears in e1, it must refer to some outer definition of (a different) v
 
+Must do ex 3.2 in jason hickey's textbook as practice
 
+
+ No, no overloading. 
+ Overloading in languages with Hindley-Milner type system is problematic since it makes type inference undecidable.
+
+Type information is not preserved at runtime, so you can't match on types or do things like that.
 
 ----------  Types and pattern matchin -------------------------
 product types : tuples(unnamed components) and records(named components)
@@ -421,4 +427,199 @@ end
 Note:  no struct or sig keywords, no naming of module or module type 
 Note:  comments to client in .mli
 , comments to implementers in .ml
+
+
+
+---------------Understanding let in terms of scheme-------------
+1.) let without "in"
+e.g.
+let x = 1;;
+let y = 2;;
+let z = x + y;;
+
+These are global binding of general form let identifier = expr
+
+2.) let with "in" or let with a body,
+These let expressions are of the general form:
+----> let id = exp1 in exp2
+----> let id = bound-term-expr in body-expr
+Hete exp1 is called let-bound term & Here exp2 is called the body of let expression
+. and id=exp1 is only valid within exp2 i.e. the body.
+
+Binding is static(lexical) meaning that value is determined by nearest enclosing definition in program text.
+
+Evaluation rules: let-bound term i.e. expr1(let-bound-term) is always evaluated first and its value is bound to id before going into evaluating expr2(let-body)
+
+Shadowing: newest lexical definition is available:
+e.g. try following out
+
+#let x = 7 in
+ let y =
+     let x = 2 in
+     	 x + 1 // 2 is shadowing 7
+ in
+ x + y;;// 7 in effect.
+
+will give you 10
+
+Another example:
+let x = 1;; // global id x
+// 1
+let z = // glbal id z
+    let x = x + x in
+    let x = x + x in // sequential binding like let*
+    	x + x;;
+// z= 8
+
+x;;
+// 1
+
+--------------------lambdas in Ocaml------------------------
+functions are first class values in functional programming language
+meaning they/lambdas can be given a name.
+
+e.g. let increment = function i -> i + 1;;
+
+for which the scheme equivalent would have been
+(define increment (lambda (x) (+ 1 x)))
+
+There is sugar for defining functions without using lambda everytime:
+e.g.
+let increment i = i + 1;;
+
+for which scheme equivalent would have been
+(define (increment x) (+ 1 x))
+
+Function application: Function application is so universal in fp langs
+that instead of using syntax like f(x) the syntax for function application
+is just a 'space' so it is "f x" in Ocaml.
+
+-----------------------Multi argument functions ---------------------
+
+Single argument functions are simple. You just give them the argument
+and they rewrite the term that is the body, evaluate it and return the
+value.
+
+The way multi argument functions are designed is that given a single
+argument, they return a functioon that takes rest of arguments until
+all arguments are given at which point the body-expression is
+evaluated and returned.
+
+There are many ways to write this:
+1.) lambda form
+# let sum = fun i j -> i + j;;
+val sum : int -> int -> int // this type expr associates to right. 
+
+Note: this is same as :
+# let sum = (fun i -> (fun j -> i + j));;
+So all multi argument functions can be converted into single arg functions
+
+2.) sugared let form
+# let sum i j = i + j;;
+
+Another useful use of multi argument functions is partial application
+e.g.
+let incr = sum 1;;
+// since sum with incomplete numkber of arguments returns a function,
+// to which we gave the name increment!
+
+Things to remember:
+** functions can be arbitrarily nested.
+** functions can be passed as arguments to other functions
+For higher order functions that take functions as arguments
+you'll notice explicit parentheses in higher order fn type definition
+** functions can be returned from functions.
+
+----------------Scoping rules of functions ----------------------
+
+Static binding/lexical scoping:
+To drive the point home :
+The value of a variable is determined by code in which a function
+is defined -- not by the code in which a function is evaluated.
+
+If function has free variables when defined, it encloses
+text environment during the time of definition.
+
+Here is a concrete example:
+
+let i = 5;;
+let addi j = i + j;; // is a free variable and is enclosed with 5.
+let i = 7;; we shadowed i's value
+addi 3;;// value used is the one enclosed when addi was defined i.e 5
+-: val = 8
+
+----------------------Labeled parameters and arguments------------
+One often gets confused between parameters and arguments.
+One good way to remember is Klingon Style taken from sjbaker's site:
+Klingon function calls do not have parameters, they have arguments
+and they always WIN THEM.
+
+So function calls have arguments.
+& function definitions have formal parameters.
+
+Ocaml allows functions to have labeled and optional parameters.
+
+Labeled parameters are specified with syntax ~label: pattern.
+Labeled argumets have similar syntax ~label: expression.
+
+e.g.
+# let f ~x:i ~y:j = i - j;; //x and y are labels, i & j are labeled parameters
+val f: x:int -> y:int -> int = <fun>
+
+
+// labeled arguments passed to function f
+# f ~y:1 ~x:2 ;;
+-: int = 1
+
+// NOte: order does not matter in case of labeled arguments
+// passing a single labeled argument
+# f ~y:1;;
+-: x:int -> int = <fun>
+
+** Many a times you would want to be label names same as parameter
+names when defining a function, so there is a ocaml shorthand ~label
+
+e.g.
+# let f ~x ~y = x - y;;
+
+** similarly argument ~label represents both the label and argument
+
+e.g.
+# let y = 1 in
+  let x = 2 in
+      f ~y ~x;;
+
+
+Optional parameters can be specified with ?
+e.g.
+# let g ?(x = 1) y = x - y;;
+val g: ?x:int -> int = <fun>
+
+arguments:
+# g 1;; // y is interpreted as 1
+
+# g ~x:3 4;; // to use optional argument, it should always be labeled.
+
+Rules of thumb to follow for optional and labeled arguments:
+* optional parameter should always be followed by non optional parameter. This makes definition unambiguous to the compiler.
+This is because it isn't possible to know when an optional
+argument has been omitted.
+Try out plyaing wiht
+# let f ~x ?(y = 1) = x - y;;
+
+
+
+* order of labeled args does not matter, except when label occurs more than once(wtf?)
+# let h ~x:i ~x:j ?(y = 1) ~z =
+   i*1000 + j*100 + y*10 + z;;
+
+# h ~z:3 ~x:4 ~y:5 ~x:6;;
+  int = 4653
+
+* Labeled and optional arguments should be specified explicitly for
+higher order functions.
+Always annotate types of input/output functions in higher order fns
+e.g.
+# let apply (g: ?x:int -> int -> int) = g ~x:1 2 + 3;;
+
 
