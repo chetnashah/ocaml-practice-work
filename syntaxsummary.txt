@@ -622,4 +622,35 @@ Always annotate types of input/output functions in higher order fns
 e.g.
 # let apply (g: ?x:int -> int -> int) = g ~x:1 2 + 3;;
 
+---------------------Pattern matching semantics----------------------------
+
+match exp0 with
+  | pat1 -> expr1
+  | pat2 -> expr2
+  | pat3 -> expr3
+
+Operational semantics:
+            First always exp0 is evaluated, then it is matched top to bottom,
+            left to right with patterns. A pattern is an expression made of
+            constants and variables. When matching against a constant, same
+            constant should be found on the other side else mathching fails
+            and variable pattern matching always succeeds with accompanying
+            binding.
+            Suppose pati matches, only then expri is evaluated and rewritten
+            as result of whole match expression.
+
+Pattern matching in functions :
+Ocaml provides the keyword function (instead of fun) for single argument pattern
+matching.
+e.g.
+let rec fib = function
+ | 0 -> 0
+ | 1 -> 1
+ | i -> fib (i-1) + fib(i-2)
+
+PAtterns are everywhere :
+let pattern = expression
+let identifier pattern patttern ... pattern = expression
+fun pattern -> expression
+function pattern -> expression
 
