@@ -1,4 +1,7 @@
 
+Note: YOU CANNOT COMPARE FUNCTIONS IN ML, even thought they are first
+class values.
+
 Essential sublanguage of Ocaml (Everything is an expression):
 
 expr ::= | c 	      	       // constant
@@ -653,4 +656,54 @@ let pattern = expression
 let identifier pattern patttern ... pattern = expression
 fun pattern -> expression
 function pattern -> expression
+
+Note: pattern matching cannot have function values:
+e.g. following throws error:
+match (fun i -> i + 1) with
+  (fun i -> i + 1) -> true;;
+
+Patterns primarily are made of combination of constants, variables and costructors
+
+-----------------------------type systems and schemes---------------------
+lets consider a function like : fn x => x;
+How polymorphic is it in terms of types? very!
+this identity function has infinitely many types e.g. int -> int, string -> string, float -> float ... etc
+i.e. one for each choice of type parameter
+There is a pattern here: which is captured by notion of a type scheme.
+A type scheme is a type expression involving one or more type variables
+A type variable stands for an unknown but arbitrary type expression.
+Type variables are written 'a (alpha), 'b (beta), 'c (gamma)
+
+E.g. type scheme: 'a -> 'a
+has instances int->int, string->string, (int*int)->(int*int)
+But it does not have instances int->string,
+
+However type scheme: 'a -> 'b
+has both possible instances string -> string and int -> string
+
+Type schemes are used to express polymorphic behaviour of functions.
+e.g. fn (x,y) => x
+will have type scheme 'a -> 'b -> 'a
+
+It is remarkable in ML that every expression has a principal type scheme.
+That there is almost always a best or most general way to infer
+types for expressions that maximises generality and hence flexibility.
+
+How is this achieved ?
+Type inference is a process of constraint satisfaction.
+First the expression determines a set of equations governing
+relationships among types of its subexpressions.
+
+Constraint generation: if function is applied to an argument,
+then a constraint equating the domain type of function with type
+of argument is generated.
+
+This constraint satisfaction is also known as unification, and
+solved using a process similar to gaussian elimination.
+
+Solution of 3 types:
+1. overconstrained : no solution, type error.
+2. underconstrained: many solutions, ambiguous(overloading) or polymorphic
+3. uniquely determined: prcisely one solution
+
 

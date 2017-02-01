@@ -58,4 +58,43 @@ let stMap: stMap = fun f s1 ->
    let sqs = stMap square streamOfIntegers
 *)
 
+(* note fun cannot be used for matching, only function *)
+(* patterns with guards using "when" *)
+
+let rec fib2 = function
+    i when i < 2 -> i
+  | i -> fib2 (i-1) + fib2(i-2);;
+
+(* wildcard pattern and pattern ranges *)
+
+let is_uppercase = function
+    'A' .. 'Z' -> true
+  | _ -> false;;
+
+(* incomplete matches - ocaml warns you *)
+
+let is_uppercase2 = function
+    'A' .. 'Z' -> true;;
+
+(* always heed the compiler warnings *)
+
+let is_odd i =
+  match i mod 2 with
+    0 -> false
+  | 1 -> true
+  | _ -> raise (Invalid_argument "is_odd");; (* added bcoz compiler warning, try -1 *)
+
+exception Foo of string;;
+
+
+
+
+
+
+
+
+
+
+
+
 
