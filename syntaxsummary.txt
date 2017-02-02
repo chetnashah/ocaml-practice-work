@@ -707,3 +707,74 @@ Solution of 3 types:
 3. uniquely determined: prcisely one solution
 
 
+-----------------------Data structures and polymorphism---------------------
+ML languages provide parametric polymorphism.
+Types and expressions can be parametrized by type variables.
+Type variables are lowercase identifiers with quote in front of them.
+Alpha ('a) , Beta ('b) etc.
+
+There may be times when compiler infers a polymorhpic type where
+one wasn't intended. In this case types can be constrained with
+syntax (s : type), where s can be pattern or expression.
+
+e.g.
+#let id_int (i: int) = i;;
+val id_int : int -> int = <fun>
+
+Above was a constraint on parameter/argument type of a function,
+If you want constraint for return type of function,
+it can be put after last parameter.
+
+e.g.
+#let do_if b i j : int = if b then i else j;;
+val do_if : bool -> int -> int -> int = <fun>
+if we had not specified int at the end the type of expression would have
+been
+do_if : bool -> 'a -> 'a -> 'a = <fun>
+
+** Value Restriction
+
+For an expression to be truly polymorphic it must be an immutable value.
+which means
+1) it is already fully evaluated
+2) it can't be modified by assignment
+
+A type variable '_a (the actual letter doesn't matter, the crucial thing is the underscore) is a so called weak type variable. This is a variable that cannot be generalized, i.e., it can be substituted with only one concrete type. It is like a mutable value, but in the realm of types.
+
+A type denoted with a weak type variable '_a is not included in a type that is denoted with a generic type variable. Moreover, it even can't escape the compilation unit, and should be either hidden or concretized.
+
+Weak type variables are created when an expression is not a pure value (that is defined syntactically). Usually, it is either a function application, or an abstraction. It is usually possible, to get rid of weak type variables by doing a so called eta-expansion, when you substitute a partially applied function to a normal function application by enumerating all function arguments
+i.e. id3 = ( fun x -> id2 x)
+
+The general point of value restriction is that mutable values are not
+polymorphic. In addition, function applications are not polymorphic
+because function might create mutable value or perform assignment.
+Thus even for simple applications like id id where it is obvious that
+no assignments are performed.
+
+** Eta expansion
+
+Given an expression e of function type
+Eta Expansion : e is same as fn z => e z, where z does not appear in e
+Eta contraction fn z => e z is same as e, where z does not appear in e
+
+Eta expansion looks like putting into a thunk.
+Eta contraction looks like taking out of a thunk.
+
+Eta expansion is a syntactic change used to work around value restriction
+
+** Overloading:
+
+Adhoc polymorphism like overloading allows functions to have same name
+  with different parameter types, when function application is invoked
+  compiler selects which call to invoked depending on type of arguments
+  OCAML DOES NOT PROVIDE OVERLOADING. It is hard to provide type inference
+  and overloading at the same time.
+
+** Subtype polymorphism and dynamic method dispatch:
+
+Subtype polymorphism and dynamic method dispatch are concepts used
+extensively in OO programs. Both kinds of polymorphism are fully supported
+in Ocaml.
+
+
