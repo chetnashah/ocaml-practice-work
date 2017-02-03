@@ -777,4 +777,93 @@ Subtype polymorphism and dynamic method dispatch are concepts used
 extensively in OO programs. Both kinds of polymorphism are fully supported
 in Ocaml.
 
+Tuples and lists:
+
+They are parametrized types, or higher kinded types or types which
+take other types to make a concrete type.
+e.g. list itself is not a concrete type,
+list int or list string is concrete type.
+list 'a is a list of any possible type 'a but list items must all be of
+type 'a unlike in scheme, where u can have a list of items of different types.
+
+Lists and tuples can be desconstructed by pattern matching through
+constructors (,) and (::)
+
+Function operating on lists can also be polymorphic e.g. (map, reduce etc.)
+e.g. they have 'a list in their signatures
+('a -> 'b) -> 'a list -> 'b list = <fun>
+
+------------------------------Tail recursion--------------------------
+
+Recursion : A function is recursive if it calls itself in some way.
+A backbone for looping and iteration in functional programming.
+
+Tail Recursion : A specific kind of recursion where value produced by
+recursive call is directly returned by caller without further computation.
+e.g. consider following two implementations :
+
+
+non tail recursive (multiplaction happens after the structurally smaller
+  recursive value is computed)
+
+let rec fact n =
+    if n = 0
+       1
+    else
+      fact (n-1) * n;; // * happens after
+
+Tail recursive implementation (result is directly returned betn all calls):
+uses standard trick, where an extra argument often called acc is used
+to collect result of computation.
+
+let rec fact2 n =
+  let rec loop accum i =        // the computation is collected in accum
+    if i = 0 then
+      accum
+    else
+      loop (i * accum) (i-1)   // we are doing computation when passing args 
+  in                           // using accumulator, instead after returning
+    loop 1 n;;
+
+So why tail recursion? isn't the first style easier to reaad?
+Bcoz tail recursion can be optimized effectively by compiler.
+One can remove all the intermediate stacks because the computation
+has already been performed in the accumulator, by the time the
+deepest call/stack is reached. There is no need to keep around intermediate
+stacks.
+
+Lists and tail recursion :
+Lists need tail recursion, since we are iterating over list primarily using
+recursion, the stack space would otherwise be linear in the length of list.
+
+Not only would that be slow but it would also man that list length is limited
+by maximum stack size.
+
+Let's see the normal implementation of map :
+let rec map f = function
+  h :: t -> f h :: map f t  // non tail-rerusive since :: happens after map
+ |[] -> []
+
+Tail recursive style implementation of map :
+
+let rec rev accum = function
+  h :: t -> rev (h :: accum) t
+ |[] -> accum
+
+let rec rev_map f accum = function
+  h :: t -> rev_map f (f h :: accum) t
+ |[] -> accum
+
+let map f l = rev [] (rev_map f [] l);;
+
+Traversiong list twice, once with rev_map and once with rev, is often
+faster than non-tail-recursive implementation.
+
+Make sure you do exercises in Ch. 5
+
+
+
+
+
+
 
