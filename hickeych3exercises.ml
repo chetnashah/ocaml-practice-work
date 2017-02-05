@@ -86,10 +86,38 @@ let is_odd i =
 
 exception Foo of string;;
 
+(* exercise 5.4 *)
+type select = (string * string * float -> bool) -> (string * string * float) list
 
+(* return list of all tuples that match the predicate *)
+let rec select pred lst =
+  match lst with
+  | h :: tl -> if pred h then h :: (select pred tl) else (select pred tl)
+  | [] -> [];;
 
+let db = [
+  "John", "x3456", 50.1;
+  "Jane", "x1234", 107.3;
+  "Joan", "unlisted", 12.7;
+];;
 
+let ans = select (fun (_,_,salary) -> salary < 100.0) db;;
 
+(* normal append function *)
+
+let rec append l1 l2 =
+  match l1 with
+  | h :: tl -> h :: append tl l2
+  | [] -> l2;;
+
+(* tail recursive append function *)
+
+let appendT l1 l2 =
+  let rec appe ls accum =
+    match ls with
+    | h :: tl -> appe tl (h :: accum)
+    | [] -> accum
+  in List.rev(appe l2 (List.rev l1));;
 
 
 

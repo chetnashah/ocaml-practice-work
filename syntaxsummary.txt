@@ -793,6 +793,14 @@ Function operating on lists can also be polymorphic e.g. (map, reduce etc.)
 e.g. they have 'a list in their signatures
 ('a -> 'b) -> 'a list -> 'b list = <fun>
 
+Parametrized types:
+As we know there are some types(List, Stack, Queue, Tree)
+can be parametrized by other types e.g. (Int, String, Car) to form
+a more concrete type i.e. List<String>, Stack<Int>..
+
+Many a times we would like container types to be parametrized but it
+can be much more general than that also.
+
 ------------------------------Tail recursion--------------------------
 
 Recursion : A function is recursive if it calls itself in some way.
@@ -860,6 +868,107 @@ Traversiong list twice, once with rev_map and once with rev, is often
 faster than non-tail-recursive implementation.
 
 Make sure you do exercises in Ch. 5
+
+All case expressions in match exp1 with ... should have the same type.
+Although it seems like obvious thing try guessing type signature of following:
+
+let nth i (x,y,z) =
+ match i with
+   1 -> x
+  |2 -> y
+  |3 -> z
+  |_ -> raise (Invalid_argument "nth")
+
+
+
+-----------------------Unions/tagged unions/variants----------------------------
+
+
+A disjoint union or union for short, represent union of several different
+types, where each of the parts is given a unique explicit name(Constructor).
+
+Ocaml allows exact union types and open union types.
+
+Here is syntax for exact union types:
+
+type typename =
+| Identifier1 of type1
+| Identifier2 of type2
+| Identifier3 of type3
+.
+.
+.
+| Identifiern of typen
+
+The constructor name "must" be capitalized. The part "of typen" is optional
+in which case it will be unit.
+
+Here is a useful example that defines a numeric type
+that is "either" a int with name Integer, "or" a float with name Real
+"or" a canonical Zero.
+The or is highlighted for the fact that it is a disjoint union.
+
+# type number =
+Zero
+| Integer of int
+| Real of float;;
+
+How to construct values of union type?
+Just tag it with Constructor
+
+e.g.
+#let z = Integer 1;;
+
+Note: Patterns also use constructors, remember patterns are combinations
+of patterns, constants and Constructors.
+
+Union types are necessary for cases when we want to write recursive
+pattern matching but sub term may be one of the types in union types
+
+Which is to say that recursive Union types are even more interesting.
+And they model tree like structures. Which also makes it really
+easy to work with trees/ recursive grammars in general.
+
+This combination of succintly specifying recursive data types with union
+along with pattern matching, makes working with recursive structures
+a breeze.
+
+Variants can help you specify recursive structures
+e.g.
+datatype intList = Nil | Cons of int * intList;;
+
+But we are stuck here with a Container type list of single type int.
+We wish to generalize Container type List over all possible item types
+e.g. List of String, List of Ints, List of Cars, i.e. a type variable
+
+And hence was born the need for Parametrized variants
+or variants that can have a type parameter/ type variable 'a;
+
+e.g. type 'a genericlist = Nil | Cons of 'a * 'a genericlist;;
+
+A parameterized datatype is an example of a parameterized type constructor: a function that takes in parameters and gives back a type. Other languages have parameterized type constructors. For example, in Java you can declare a parameterized class.
+
+class List<T> {  //T is the type variable
+  T head;
+  List <T> tail;
+  ...
+}
+
+Let's go along the same lines and define a generic binary tree,
+where each node is either a leaf or has two child subtrees.
+
+# type 'a tree =
+  Node of 'a * 'a tree * 'a tree
+ |Leaf;;
+
+If the constructor requires the value of tuple type it is a good idea
+to put it in parentheses.
+e.g.
+let kk = Node (1, Leaf, Leaf);;
+
+
+
+
 
 
 
