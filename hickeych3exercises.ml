@@ -120,9 +120,71 @@ let appendT l1 l2 =
   in List.rev(appe l2 (List.rev l1));;
 
 
+(* Binary tree paremetrized with union types *)
+
+type 'a tree =
+    Node of 'a * 'a tree * 'a tree
+  | Leaf;;
+
+(* operating on recursive structures with pattern matchin *)
+
+let rec cntNonLeafNodes = function
+    Leaf -> 0
+  | Node(_, left, right) ->
+    cntNonLeafNodes left + cntNonLeafNodes right + 1;;
 
 
+(* Lets make a set data structure using this tree structure we have *)
+(* Leaf only is empty set *)
+
+let emptyTree = Leaf;;
+
+(* This is an unbalanced bintree where original set is made right subtree *)
+let insert x s = Node (x, Leaf, s);;
+
+(* take a list and keep inserting into set, in reverse order *)
+let rec set_of_list = function
+    [] -> emptyTree
+  | h :: tl -> insert h (set_of_list tl);;
+
+let ss = set_of_list [1;2;3;97;98;99;];;
+
+(* Simple membership function *)
+let rec mem x = function
+    Leaf -> false
+  | Node (y, left, right) ->
+    x = y || mem x left || mem x right;;
+
+(* In order to make the binary tree, height balanced, we can
+   rotate trees maintaining invariant that for any interior node
+   Node(x, left, right), labels in left child are smaller than x,
+   and labels in right node are greater than x *)
+
+let rec binsert x = function
+    Leaf -> Node (x, Leaf, Leaf)
+  | Node (y, left, right) as node ->
+    if x < y then
+      Node (y, insert x left, right)
+    else if x > y then
+      Node (y, left, insert x right)
+    else
+      node;;
 
 
+(* Not these functions add in reverse order *)
+let rec bset_of_list = function
+    [] -> Leaf
+  | h :: tl -> binsert h (bset_of_list tl);;
 
+let bss = bset_of_list [1;2;3;66;65;64;];;
+
+(* Now we can speed up search by pruning tree searchusing order comparison *)
+
+let rec bmem x = function
+    Leaf -> false
+  | Node (y, left, right) ->
+    x = y || (x < y && mem x left) || (x > y && mem x right);;
+
+
+(* Now we address red-black trees *)
 
