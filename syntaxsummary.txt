@@ -967,12 +967,58 @@ e.g.
 let kk = Node (1, Leaf, Leaf);;
 
 
+-------------------------Open & Closed union types-----------------------
+The second union type different from exact union type is open,
+i.e. subsequent definitions may add more cases to the type.
+Also known as Polymorphic variants, don't confuse them with
+parametrized variants.
 
+Syntax is similar to union types, but constructor names
+are prefixed with back-quote (`)
+and type deifinition is enclosed in [> ...] brackets.
 
+Open types will often need an _ in definition alson
 
+type color = Red | Black;;
+let typeprinteropen = function
+| `Red -> "Hi color"
+| `None -> "found None"
+| _ -> "What is this ?";;
+val typeprinteropen : [> `None | `Red ] -> key = <fun>
 
+Otherwise they result in Closed union type definitons :
 
+let typeprinter = function
+| `Red -> "Hi true"
+| `None -> "found none"
+;;
+val typeprinter : [< `None | `Red ] -> key = <fun>  
 
+Closed Union type :
+> = specified cases and more.. OpenUnion
+< = specified cases only. ClosedUnion
 
+Type definition for open types:
+Writing a simple type definition motivated from above 
+e.g.
+type mixedColor = [> `Red | `None ];;
+does not work and says the variable 'a is unbound
+
+This is because actually any type constructor not explicitly mentioned
+is also a part of the type e.g. `Zero
+Type theoretically, any function defined over open type,
+must be polymorphic over unspecified cases also.
+
+Technically, this amounts to same thing as saying open type
+is some type 'a that includes at least cases specified in definition
+and more. So we must write type variable explicitly
+
+type 'a mixedColor = [> `Red | `None ] as 'a;;
+Note the output has written constraint :
+type 'a mixedColor = 'a constraint 'a = [> `None | `Red ] 
+
+The constraint form is also written as
+let (zero: a' mixedColor) = `Zero;;
+val zero : [> `None | `Red | `Zero ] = `Zero 
 
 

@@ -188,3 +188,52 @@ let rec bmem x = function
 
 (* Now we address red-black trees *)
 
+(* Red-black trees have following invariants
+   1. every leaf is black
+   2. All children of every red node are black
+   3. Every path from root to a leaf has same number of black nodes as
+      every other path.
+   4. The root is always black *)
+
+type color = Red | Black;;
+
+type 'a rbtree =
+    Node of color * 'a * 'a rbtree * 'a rbtree
+  | Leaf;;
+
+let rec rbmem x = function
+    Leaf -> false
+  | Node (_, y, left, right) ->
+    x = y || (x < y && rbmem x left) || (x > y && rbmem x right);;
+
+(* Maintaining invariants while inserting ->
+   1. Find location where node is to be inserted
+   2. If possible add new node with red label, bcoz 3 will be preserved
+      But this may violate 2 -> red-red parent child
+   So the balance function which considers case of red-red and rearranges *)
+
+(* all cases with R-R relationship are converted to R-B-B *)
+let balance = function
+    Black, z, Node (Red, y, Node (Red, x, a, b), c), d
+  | Black, z, Node (Red, x, a, Node (Red, y, b, c)), d
+  | Black, x, a, Node (Red, z, Node (Red, y, b, c), d)
+  | Black, x, a, Node (Red, y, b, Node (Red, z, c, d)) ->
+    Node (Red, y, Node(Black, x, a, b), Node (Black, z, c, d))
+  | a, b, c, d ->
+    Node (a, b, c, d);;
+
+let rbinsert x s =
+  let rec rbins = function
+      Leaf -> Node (Red, x, Leaf, Leaf)
+    | Node (color, y, a, b) as s ->
+      if x < y then balance (color, y, rbins a, b)
+      else if x > y then balance (color, y, a, rbins b)
+      else s
+  in
+  match rbins s with (* first ins in s and then make the first one black *)
+    Node (_, y, a, b) -> (Black, y, a, b)
+  | Leaf -> raise (Invalid_argument "insert");;
+
+
+
+
