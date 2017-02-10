@@ -234,6 +234,27 @@ let rbinsert x s =
     Node (_, y, a, b) -> (Black, y, a, b)
   | Leaf -> raise (Invalid_argument "insert");;
 
+type 'a mylist = Nil | Cons of 'a * 'a mylist;;
+
+
+let rec mylistmap fn = function
+    Nil -> Nil
+  | Cons (h, tl) -> Cons (fn h, mylistmap fn tl);;
+
+let mylistval = Cons(1, Cons(2, Cons(3, Cons(4, Nil))));;
+
+let mapans = mylistmap square mylistval;;
+
+let rec mylistappend xs ys = match xs with
+    Nil -> ys
+  | Cons (h, tl) -> Cons (h, mylistappend tl ys);;
+
+let mylval1 = Cons (1, Cons(2, Cons(3, Nil)));;
+let mylval2 = Cons (44, Cons(11, Cons(76, Nil)));;
+
+let myapplist = mylistappend mylval1 mylval2;;
+
+type unary_number = Z | S of unary_number;;
 
 
 

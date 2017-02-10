@@ -956,7 +956,7 @@ class List<T> {  //T is the type variable
 
 Let's go along the same lines and define a generic binary tree,
 where each node is either a leaf or has two child subtrees.
-
+How do I define my own parametrized variant: =>
 # type 'a tree =
   Node of 'a * 'a tree * 'a tree
  |Leaf;;
@@ -1021,4 +1021,36 @@ The constraint form is also written as
 let (zero: a' mixedColor) = `Zero;;
 val zero : [> `None | `Red | `Zero ] = `Zero 
 
+---------------------------Reference Cell and side effects-----------------
+
+Principal tool is reference cell.
+Which can be viewed as kind of box. Box always holds a value,
+but contents of box can be replaced by assignments
+Primary operations
+
+1. Allocation (create reference cell)
+   val ref: 'a -> 'a ref
+
+2. Assignment (Change reference cell contents)
+   val (:=) : 'a ref -> 'a -> unit
+
+3. Dereferencing (Get value inside reference cell)
+   val (!) : 'a ref -> 'a
+
+Uses in one example:
+let flag = ref false;;
+flag := (not !flag);; // toggle flag contents and assign back
+
+Why imperative mutability?
+Sometimes for algorithms, I/O
+
+You can make your own types which are refs by suffixing
+existing type with ref
+
+e.g.
+type intboxes = int ref;;
+type intarray = (int -> int) ref;;
+
+you can also have ref of compound types
+e.g. let myarr = ref (fun n -> 0);;
 
