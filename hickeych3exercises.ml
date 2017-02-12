@@ -256,5 +256,69 @@ let myapplist = mylistappend mylval1 mylval2;;
 
 type unary_number = Z | S of unary_number;;
 
+(* adds two unary numbers *)
+let rec addUns un1 un2 = match un1 with
+    Z -> un2
+  | (S tl) -> (S (addUns tl un2));;
+
+let un1 = S Z;;
+let un2 = S (S Z);;
+
+let rec multUns un1 un2 acc = match un1 with
+    Z -> acc
+  | (S tl) -> multUns tl un2 (addUns acc un2);;
+
+type small = Four | Three | Two | One;;
+
+let lt_small sm1 sm2 = not (sm1 < sm2);;
+
+(* Doing arithmetic expressions *)
+
+type unop = Neg;;
+type binop = Add | Sub | Mul | Div;;
+type exp =
+    Constant of int
+  | Unary of unop * exp
+  | Binary of exp * binop * exp;;
+
+let rec eval ex: int =
+  match ex with
+    Constant c -> c
+  | Unary (u, e) -> -1 * (eval e)
+  | Binary (e1, b, e2) -> match b with
+      Add -> (eval e1) + (eval e2)
+    | Sub -> (eval e1) - (eval e2)
+    | Mul -> (eval e1) * (eval e2)
+    | Div -> (eval e1) / (eval e2);;
+
+let ex1 = Binary (Constant 2, Mul, Unary (Neg, Constant 4));;
+
+type ('k, 'v) treeDict = Empty | Node of 'k * 'v * ('k, 'v) treeDict * ('k, 'v) treeDict;;
+
+
+let rec addDict tr k v = match tr with
+    Empty -> Node(k, v, Empty, Empty)
+  | Node (kk, vv, tLeft, tRight) ->
+    if k = kk then
+      Node (kk, v, tLeft, tRight)
+    else if k > kk then
+      Node (kk, vv, tLeft, addDict tRight k v)
+    else
+      Node (kk, vv, addDict tLeft k v, tRight);;
+
+let rec findDict tr k = match tr with
+    Empty -> raise (Invalid_argument "Cannot find in empty tree")
+  | Node (kk,vv,tLeft,tRight) ->
+    if k = kk then
+      vv
+    else if k > kk then
+      findDict tRight k
+    else
+      findDict tLeft k;;
+
+
+
+
+
 
 

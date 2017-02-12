@@ -966,6 +966,17 @@ to put it in parentheses.
 e.g.
 let kk = Node (1, Leaf, Leaf);;
 
+Multiple type parameters : let's say you want something to be generic
+not only on a single type parameter, but on two type parameters,
+e.g. like a dictionary. You might have done Java, then you would know
+HashMap<K,V> has two type variables K and V.
+In ML, multiple type parameters are written between parentheses,
+and seperated by commas.
+i.e.
+  type ('a, 'b) xxx = { aaa: 'a; bbb: 'b; ccc: int; }
+
+Question: We can have parametrized types, but can we have parametrized
+functions ?
 
 -------------------------Open & Closed union types-----------------------
 The second union type different from exact union type is open,
