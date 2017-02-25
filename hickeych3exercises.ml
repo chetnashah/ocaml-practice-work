@@ -317,7 +317,130 @@ let rec findDict tr k = match tr with
       findDict tLeft k;;
 
 
+(* Doubly linked lists (cyclic data structure) with mutale features *)
 
+(* API for elem of DLL// Nil or Elem (content, leftref, righref) *)
+type 'a elem = Nil | Elem of 'a * 'a elem ref * 'a elem ref;;
+
+let nil_elem = Nil;;
+
+let get el = match el with
+    Nil -> raise (Invalid_argument "Get on Nil")
+  | Elem (x, _, _) -> x;;
+let prev_elem el = match el with
+    Nil -> raise (Invalid_argument "prev_elem on Nil")
+  | Elem (_, prev, _) -> !prev;;
+let next_elem el = match el with
+    Nil -> raise (Invalid_argument "next_elem on Nil")
+  | Elem (_, _, next) -> !next;;
+let create_elem x = Elem (x, ref Nil, ref Nil);;
+
+
+
+(* API for DLL *)
+type 'a dllist = 'a elem ref;; (* the head is ref to first element *)
+let create () = ref Nil;;
+
+(* example of multiple pattern matching *)
+let insert elem list = match elem, !list with
+    Nil, _ -> raise (Invalid_argument "cannot insert Nil in dll")
+  | Elem (_, prev, next), Nil -> (* We insert elem in a Nil list *)
+    prev:= Nil;
+    next:= Nil;
+    list:= elem
+  | Elem (_, prev1, next1), (Elem (_, prev2, _) as head) ->
+    (* INserting elem in a non empty list with a head *)
+    prev1 := Nil;
+    next1 := head;
+    prev2 := elem;
+    list := elem;;
+
+(* see nested matching *)
+let remove elem list = match elem with
+    Nil -> raise (Invalid_argument "can't remove nil from list")
+  | Elem (_, prev, next) ->
+    (match !prev with
+       Elem (_,_, prev_next) -> prev_next := !next
+     | Nil -> list := !next
+    );
+    (match !next with
+       Elem(_, next_prev, _) -> next_prev := !prev
+     | Nil -> ()
+    );
+;;
+
+(* memo function that remembers values of functioons with arguments *)
+(* val memo: ('a -> 'b) -> ('a -> 'b)) *)
+
+let memo f =
+  let table = ref [] in
+  let rec find_or_apply entries x = (* look for x in entries *)
+    match entries with
+      (x', y) :: _ when x' = x -> y (* already computed, just return *)
+    | _ :: entries -> find_or_apply entries x (* keep looking in list *)
+    | [] ->  (* entry was not found in table, apply and put it in table *)
+      let y = f x in
+      table := (x,y) :: !table;
+      y
+  in
+  (fun x -> find_or_apply !table x);;
+
+(* use time function to measure time taken by functions *)
+let time f x =
+  let start = Sys.time () in
+  let y = f x in
+  let finish = Sys.time () in
+  Printf.printf "Elapsed time : %f seconds\n" (finish -. start);
+  y;;
+
+let rec fib x : int = match x with
+    0 | 1 as i -> i
+  | i -> fib (i - 1) + fib (i - 2);;
+
+let memo_fib = memo fib;;
+
+(*
+time memo_fib 40;;
+time memo_fib 40;;
+*)
+
+
+
+(* graph representation : vertex and edges list of vxv *)
+type vertex = int;;
+type graph = (vertex, vertex list) treeDict;;
+
+let gdata = [1,2; 1,3; 1,4; 2,4; 3,4];;
+
+(* populate graph from given edge list, with adjacency list representation *)
+let rec populate dct edgelist = match edgelist with
+    [] -> dct
+  | h :: tl -> (
+      let v1 = fst h in
+      let v2 = snd h in
+      let newlist = (
+        try
+          v2 :: (findDict dct v1)
+        with
+        _ -> v2 :: []
+      ) in
+      populate (addDict dct v1 newlist) tl
+    );;
+
+let gready = populate Empty gdata;;
+
+(* predicate that returns if v1 can reach  to v2 (directional) *)
+let reacahble g v1 v2 = false;;
+
+(*
+val makeheap : int -> heap  : create heap containing single element
+val insert : heap -> int -> heap : add element to heap, dups allowed
+val findmin : heap -> int : return smallest element of heap
+val deletemin : heap -> heap : return new heap without smalles element
+val meld: heap -> heap -> heap : join two heaps containing elements of both
+
+some helper functions would be sinkup, sinkdown etc.
+*)
 
 
 

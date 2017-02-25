@@ -1040,13 +1040,13 @@ but contents of box can be replaced by assignments
 Primary operations
 
 1. Allocation (create reference cell)
-   val ref: 'a -> 'a ref
+   val ref: 'a -> 'a ref // allocation operations return ref of type passed
 
 2. Assignment (Change reference cell contents)
-   val (:=) : 'a ref -> 'a -> unit
+   val (:=) : 'a ref -> 'a -> unit // assignment operations do their work on the storage and don't return anything so are usually followed by a ';'
 
 3. Dereferencing (Get value inside reference cell)
-   val (!) : 'a ref -> 'a
+   val (!) : 'a ref -> 'a // dereference operations remove ref of the type passed
 
 Uses in one example:
 let flag = ref false;;
@@ -1059,9 +1059,125 @@ You can make your own types which are refs by suffixing
 existing type with ref
 
 e.g.
-type intboxes = int ref;;
+type intboxes = int ref;; // in types ref is written in end
 type intarray = (int -> int) ref;;
 
 you can also have ref of compound types
-e.g. let myarr = ref (fun n -> 0);;
+e.g. let myarr = ref (fun n -> 0);; // in values ref is written at start
+
+Value restriction says that polymorphism should be restricted to
+immutable values only.
+A function application is not a value and mutable reference cell
+is not a value, by this definition they are not truly polymorphic
+as '_a indicate.
+
+Also cyclic data structures(e.g. circular doubly linked list)
+need imperativeness, ask why?
+
+Here is an excerpt from the haskell mailing list :
+
+Immutability and cyclic data structures do not mix very well at all.
+"Updating" an immutable structure of course really means generating a
+new structure.  However, because of immutability any parts that do not
+change can be shared between the old and new structures.  The parts
+the must be rebuilt are only those nodes from which the updated part
+is reachable.  Typically, with acyclic data structures (i.e. trees),
+this part that must be updated is small, and large parts of the
+structure remain unchanged and can be shared between the old and new
+structures.  However, with cyclic data structures, typically every
+part of the structure is reachable from every other part --- hence,
+any update necessitates rebuilding the entire structure.
+
+Another problem with cyclic data structures is that one often cannot
+perform operations such as "map" without losing all the sharing.
+
+There are solutions to this but you're right that they tend to require
+a fair bit of background to understand.  The simplest way to proceed
+is to assign unique identifiers to nodes and store the data structure
+implicitly, e.g. by storing in each node the identifiers of its
+neighbors rather than actual references to them.  In essence this is
+"simulating" the ability to have mutable pointers.
+
+Memoization and mutability :
+It is a good idea to memoize long time taking computation in a mutable
+storage and return result if we already have it in a table,
+Supposingly f is a pure function then so is memo f(referentially transparent)
+It behaves like original function, except it trades space for time.
+e.g. first call to fib 40 might take 15 secs but second call with same
+arguments will be instantaneous.
+Also the meomoizing logic is independent of functions it is called on
+so can work on a wide class of functions
+Some even say, Behind a function there might be a factory, a gear, a machine
+or a lookup table, no-one knows. All you care about is same output for same
+input.
+
+Exception and effects:
+ML has expressions with types, may have values and may have an effect.
+By effect we mean some action that is not captured in the value.
+
+Main examples of effects in ML :
+Exceptions : Evaluation may be aborted by signaling exceptional condition.
+Mutation : Storage is modified during expression evaluation.
+I/O : Reading and writing from/to sources/sinks during evaluation.
+Communication : Data may be sent/recvd from communication channels.
+
+Exceptions and Raising:
+Static violations are signalled by type checking errors( 3 + "3" )
+Dynamic violations are signalled by raising exceptions. ( 3 / 0 )
+
+Exceptions are first-class values in Ocaml, and can be stored
+and manipulated like any other value and must begin with uppercase letter.
+
+Exceptions can (optionally) take a parameter so they can carry
+a value with them that can be extracted and examined if the
+exception is caught. also known as value carrying 
+
+    # exception Foo of string;;
+    exception Foo of string
+    # exception Bar of int;;
+    exception Bar of int
+    # exception Foobar of int * string;;
+    exception Foobar of int * string
+    # raise (Foo "yikes");;
+    Exception: Foo "yikes".
+    # raise (Bar 12);;
+    Exception: Bar 12.
+    # raise (Foobar (12,"yikes"));;
+    Exception: Foobar (12, "yikes").
+
+Exceptions are thrown using "raise" function. raise takes an exception
+and does not return, rather it throws exception
+
+One can write evaluation of exceptions as following
+3 div 0 "raises" Division_by_zero
+
+Exceptions need to have names to be able to be distinguished from
+each other. e.g. Div vs Overflow
+
+Match_failure is exception at run-time indicative of vialotion of pre
+condition of invocation of function in program.
+Also if no inexhaustive match warnings arise during type checking,
+then exception Match can never raise during evaluation
+
+hd [] "rasies" Match
+
+Exception handlers and catching :
+The other half complientary to raising exceptions is catching them with
+exception handlers.
+In general exception mechanisms are used to effect non-local transfers
+of control.
+By using an exception handler we may "catch" a raised exception
+and continue evaluation along some other path.
+
+
+Exception handling with "try expr with pattern-matching":
+
+let safe_inverse n =
+  try Some (1/n)
+  with Division_by_zero -> None
+
+let safe_list_find p l =
+  try Some (List.find p l)
+  with Not_found -> None
+
 
