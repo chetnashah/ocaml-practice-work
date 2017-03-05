@@ -2,6 +2,8 @@
 Note: YOU CANNOT COMPARE FUNCTIONS IN ML, even thought they are first
 class values.
 
+(=) : 'a -> 'a -> bool, which will always do structural equality (not customizable), but throw on encountering a function or C data
+
 Essential sublanguage of Ocaml (Everything is an expression):
 
 expr ::= | c 	      	       // constant
@@ -879,6 +881,20 @@ let nth i (x,y,z) =
   |3 -> z
   |_ -> raise (Invalid_argument "nth")
 
+-----------------------------Lazy evaluation ----------------------------
+
+It is possible to simulate lazy evaluation by using thunks. A thunk is a function of the form fun () -> .... It takes advantage of the fact that the body of a function is not evaluated when the function is defined, but only when it is applied. Thus function bodies are evaluated lazily.
+
+e.g. let f = fun () -> List.hd [];;
+val f: unit -> 'a = <fun>
+
+means doesn't fail immediately , but only when called
+f ();;
+Exception: Failure "hd";;
+
+Other way to write thunk is
+let f () = 10 / 0;;
+val f: unit -> 'a = <fun>
 
 
 -----------------------Unions/tagged unions/variants----------------------------
@@ -1179,5 +1195,38 @@ let safe_inverse n =
 let safe_list_find p l =
   try Some (List.find p l)
   with Not_found -> None
+
+
+--------------------------------- Records and arrays -------------------------
+
+Records types can be defined with type keyword and placing a ; seperated
+list of labels and their types seperated with ":" inside curly brances
+
+type db_entry = {
+     name : string;
+     age : int option;
+}
+
+Record values are initialized with using "=" in place of ":",
+like following
+
+let entry1 = {
+    name = "Chetna";
+    age = None
+}
+
+What if I leave out one entry of the record like following :
+
+let et2 = {
+    name = "Kumar";
+}
+then the compiler will throw error :
+Some record fields are undefined. So for initializing a record value
+always gives all label values.
+
+Ways to access record labels:
+1. Dot Notation : use recordname.fieldname, e.g. entry1.name
+2. Pattern matching : let { name = n1; height = h1 } = entry1;;
+   then the values are captured in n1 and h1.
 
 

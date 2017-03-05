@@ -443,5 +443,81 @@ some helper functions would be sinkup, sinkdown etc.
 *)
 
 
+(* Disjoint set data structure with path compression *)
+(* uses ref based features for path compression *)
+
+(* represent vertex as a pair(label, parent link), Links all upwards*)
+(* parent is either Root i or Parent of vertex) where i is size of tree *)
+
+type 'a parent =
+    Root of int
+  | Parent of 'a vert
+and
+  'a vert = 'a * 'a parent ref;;
+
+let vertlabellist = [1;2;4;5;6;7;8;9;10];;
+let unionlist = [(2,4); (1,5); (2,6); (4,8); (5,9); (4,8); (1,7)];;
+let makeVert l = (l, (l, ref (Root 1)));;
+let vertlist = List.map makeVert vertlabellist;;
+
+
+let union ((_,p1) as u1) ((_, p2) as u2) =
+  match !p1, !p2 with
+    Root size1, Root size2 when size1 > size2 ->
+    p2 := Parent u1;
+    p1 := Root (size1 + size2)
+  | Root size1, Root size2 ->
+    p1 := Parent u2;
+    p2 := Root (size1 + size2)
+  | _ -> raise (Invalid_argument "union: not roots");;
+
+let rec simple_find ((_, p) as v) =
+  match !p with
+    Root _ -> v
+  | Parent v -> simple_find v;;
+
+let rec compress root (_, p) =
+  match !p with
+    Root _ -> ()
+  | Parent v -> p := Parent root; compress root v
+
+let find v =
+  let root = simple_find v in
+  compress root v;
+  root;;
+
+
+let processUnion lst = List.iter (fun (x,y) ->
+    let u1 = find x in
+    let u2 = find y in
+    if u1 != u2 then begin
+      union u1 u2
+    end
+  ) lst;;
+
+(* (status, thunk) *)
+type 'a deferred = bool ref * (unit -> 'a);;
+
+(* (unit -> 'a) -> 'a deffered *)
+let defer (ff: unit -> 'a) = (ref false, ff);;
+
+(* 'a deferred -> 'a *)
+let force =
+  let calculatedvalue = ref [] in
+  let findorapply (st, th) entries = match !st with
+      true -> List.hd entries
+    | false ->
+      st := true;
+      let y = th () in
+      calculatedvalue := y :: !calculatedvalue;
+      y
+  in
+  (fun dv -> findorapply dv !calculatedvalue)
+;;
+
+
+
+
+
 
 
