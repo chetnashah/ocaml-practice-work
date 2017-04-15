@@ -201,9 +201,9 @@ If a type is part of a typeclass, that means that it
 supports and implements the behaviour the typeclass describes.
 
 Some examples of typeclasses are :
-EQ : support equality checking
+EQ : support equality checking, supply (=)
 SHOW : supports string representation
-ORD : supports ordering
+ORD : supports ordering vi comparision, LT, GT, EQ supply (compare)
 READ : supports readability of given type from string
 ENUM : supports enumerability or can be listed e.g. Bool, Char, Int
 Bounded : members have an upper and lower bound.
@@ -221,3 +221,23 @@ Well known kinds of type constructors/types:
 ```
 Single * usually represents a type
 And * -> * usually represents a type constructor
+
+
+Haskell list ([]) derives Eq and Ord
+Eq semantics: Equal when same elements(Eq recursively applied) in same order 
+e.g. [1,2,3] == [2,3,1] is false
+Ord semantics : list with greater number of elements is bigger.
+e.g. [1] > [] is true
+
+
+Differences between data and newtype:
+
+newtype declaration must have only one value constructur with only one field
+
+e.g. newtype NN = Aha Int | Boo Int // invalid because two value constructors
+
+e.g. newtype NN = Aha Int Bool // invalid because the value constructor has two fields
+
+e.g. newtype NN = Aha Int // valid newtype NN
+Also note that value constructor in newtype is strict
+
