@@ -1214,6 +1214,7 @@ let entry1 = {
     name = "Chetna";
     age = None
 }
+the interpreter automatically infers type based on fields. (entry1: db_entry)
 
 What if I leave out one entry of the record like following :
 
@@ -1228,5 +1229,10 @@ Ways to access record labels:
 1. Dot Notation : use recordname.fieldname, e.g. entry1.name
 2. Pattern matching : let { name = n1; height = h1 } = entry1;;
    then the values are captured in n1 and h1.
+
+3. Functional record updates using with :
+e.g.
+let entry2 = { entry1 with age = Some 52 };
+
 
 
