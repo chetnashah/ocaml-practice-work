@@ -149,7 +149,7 @@ by the way how let declarations work it seems)"
 Pattern matching can happen also without using match or function keywords,
 simply using 'let' which does bindings of unbound vars in pattern side of let
 binding (usually useful for single case pattern matchings)
-e.g. let (x,y) = 2,3;; // binds x to 2, and y to 3
+e.g. let (x,y) = 2,3;; // binds x to 2, and y to 3, env enriched on pattern matching
 let head :: 2 :: _ = [1;2;3];; // binds head to 1
 
 
@@ -165,6 +165,15 @@ Let's say we have :
 
 One would have thought t is bound to _ but instead,
 Here t is bound to b :: _
+
+Note rhs of a pattern match that happened correctly,
+rhs is evaluated in environment enriched by the bindings done during pattern matching e.g.
+```
+let rec fold_left f accu l =
+  match l with
+    [] -> accu
+  | a::l -> fold_left f (f accu a) l   (* inside rhs, after binding l is (cdr l)) *)
+```
 
 here is another example of comparing rationals:
 let min_rat pr = match pr with
