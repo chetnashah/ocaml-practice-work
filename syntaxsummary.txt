@@ -1,4 +1,7 @@
 
+* What is binding ?
+The process of giving a name to a value is binding.
+
 Note: YOU CANNOT COMPARE FUNCTIONS IN ML, even thought they are first
 class values.
 
@@ -35,10 +38,11 @@ v ::= c | (op) | (v1, v2, v3 ... vn)
 Time travel and function closures :
 A function value is really a data struct
 that has two parts:
-1. The code (obviously)
+1. The code/function (obviously)
 2. the environment that was current when function was
    defined(lexical scope). Which gives meaning to all the free
    variables of the function body.
+Contrast a closure with an object which also has state/environment but many functions.
 
 A function application :
 - evaluates the code part of the closure
@@ -1224,6 +1228,10 @@ let entry1 = {
     age = None
 }
 the interpreter automatically infers type based on fields. (entry1: db_entry)
+
+Note: You cannot initialize a record value e.g. entry1 without declaring it's type first.
+e.g. you have to declare type db_entry above first before making a record like entry1,
+otherwise compiler throws error: "Unbound record field name"
 
 What if I leave out one entry of the record like following :
 
