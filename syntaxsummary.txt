@@ -1,6 +1,6 @@
 
 * What is binding ?
-The process of giving a name to a value is binding.
+The process of giving a name/pattern matching to a value is binding.
 
 Note: YOU CANNOT COMPARE FUNCTIONS IN ML, even thought they are first
 class values.
@@ -75,9 +75,10 @@ moral of story : all functions have single argument
 
 ways to declare a function :
 
-1) lambda way : function x -> x * x;
+1) lambda way single argument (anonymous function) : function x -> x * x;
    lambda way with multi argument : "fun" keyword should be used
-   lambda way also does pattern matching by the way
+   lambda way also does pattern matching by the way,
+   also the lambda way is an expression, meaning it returns a value (the lambda)
    
 2) multi argument let (auto curried):
 let fn a b c = a+b+c
@@ -94,6 +95,12 @@ let succ x = x * x;;
 
 imp notes :
 a function value ( a closure) can be passed around as a value or returned as a result in case of higher order functions.
+One thing lambdas(anonymous) can't do by themselves is recursion, since a name must
+be given to call itself, It will atleast need a let like e.g. scheme needs letrec.
+
+Common misues of lambda: if you pass something like:
+fun x -> f x (all this lambda does is to use it's argument with another function, which other function will automatically do)
+instead just pass f.(unless some kind of laziness is involved)
 
 higher order functions :
 let h = function f -> function y -> (f y) + y;;
@@ -102,6 +109,10 @@ val h : (int -> int) -> int -> int = <fun>
 Why do functional languages don't need type annotation :
 they are mostly analyzed by datum they are operating on
 and all code is generic <T>
+
+Function refactoring tip: keep functions only where you need them,
+e.g. a function should be scoped inside other functions (e.g. with let etc) or inline lambdas, 
+if it is not used elseWhere.
 
 Type constraint :
 programmer annotating the type helps compiler syntax is like following
@@ -216,7 +227,7 @@ Sum types: Variants(qualified unions and enum)
 Declaring new types :
 type keyword is used
 type name is always starts with lowercase letter
-type constructor is always Uppercase letter followed by "of" followed by arguments
+type constructor is always Uppercase letter optionally followed by "of" followed by arguments
 type constructor that does not need any argument is also known as a constant constructor
 and can be directly treated as values
 
@@ -334,7 +345,7 @@ let animalPrinter (ani: animal) = match ani with
 
 (* ^ is ocaml's way of joining strings together *)
 
-2. for record/tuple pattern matching the pattern should look like a record/tuple
+2. for record/tuple(product types) pattern matching the pattern should look like a record/tuple
 e.g/
 # type state = {
      lcd: int; (* last computation done *)
@@ -491,6 +502,14 @@ let z = // glbal id z
 
 x;;
 // 1
+
+
+* Every value binding and every function binding is an act of pattern matching.
+e.g. let identifier = expression is just a special case of
+let pattern = expression. where bindings are done.
+
+* Every function in ML takes exactly one argument.
+let p1 p2 .. pn = expression
 
 --------------------lambdas in Ocaml------------------------
 functions are first class values in functional programming language
@@ -680,6 +699,17 @@ match (fun i -> i + 1) with
 Patterns primarily are made of combination of constants, variables and costructors
 
 -----------------------------type systems and schemes---------------------
+
+Any good language with a sound type system will have three kind of types:
+0. base types like int, char, bool etc.
+and (for making compound types)
+1. each of types (records, structs, product types)
+2. one of types (enums, Sum types)
+3. refer other types (including itself) as type parameters for polymorphism.
+4. Possibly subtyping from existing types.
+
+An interesting compound type is int list, which uses 1, 2 and 3.
+
 lets consider a function like : fn x => x;
 How polymorphic is it in terms of types? very!
 this identity function has infinitely many types e.g. int -> int, string -> string, float -> float ... etc
@@ -1251,5 +1281,14 @@ Ways to access record labels:
 e.g.
 let entry2 = { entry1 with age = Some 52 };
 
+Tuples are just syntactic sugar for record with field names: 1, 2 ..etc
+kind of like in other languages(e.g. python) lists are dicts with keys 0, 1, .. etc
+
+
+---------------------- equality and comparisions ------------------------
+
+x = y in ocaml just like x.equals(y) in Java. (Strucutural/value/deep equality)
+
+and x == y just like x == y (comparing the address) in Java. (shallow/address equality)
 
 
