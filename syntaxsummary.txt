@@ -73,6 +73,14 @@ let abc = 1 in expr;
 
 moral of story : all functions have single argument
 
+Ways to get around it: pass a n-tuple with n values
+or
+Currying: Take one argument and return a function that takes another argument
+the returned function will be able to use the first argument in the environment.
+
+If caller provides too few arguments, we get back a closure waiting for the
+remaining arguments, This is also known as partial application.
+
 ways to declare a function :
 
 1) lambda way single argument (anonymous function) : function x -> x * x;
@@ -221,6 +229,8 @@ Must do ex 3.2 in jason hickey's textbook as practice
 Type information is not preserved at runtime, so you can't match on types or do things like that.
 
 ----------  Types and pattern matchin -------------------------
+Base data types: int, float, char, string, bool and unit.
+
 product types : tuples(unnamed components) and records(named components)
 Sum types: Variants(qualified unions and enum)
 
