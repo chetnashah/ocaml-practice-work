@@ -70,7 +70,7 @@ Installation: `opam install core`
 
 Usage within utop:
 ```utop
-#require "core";;
+#require "core";; // require package core to use Base
 open Base;;
 List.find;; // must see new signature
 ```
