@@ -13,7 +13,8 @@ and can output a set of shell commands which configures your shell with the
 right PATH variables so that packages will just work.
 This result of running
 `eval opam config env`
-sets variables so that subsequent commands will use them.
+sets env variables( e.g. `OCAML_TOPLEVEL_PATH`)
+so that subsequent commands will use them.
 
 A good idea is to add this in `.bashrc` or `.bash_profile`.
 
