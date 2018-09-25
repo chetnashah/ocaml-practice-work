@@ -1106,6 +1106,7 @@ val zero : [> `None | `Red | `Zero ] = `Zero
 Principal tool is reference cell.
 Which can be viewed as kind of box. Box always holds a value,
 but contents of box can be replaced by assignments
+A ref is a record type with a single mutable field called content.s
 Primary operations
 
 1. Allocation (create reference cell)
@@ -1121,11 +1122,35 @@ Uses in one example:
 let flag = ref false;;
 flag := (not !flag);; // toggle flag contents and assign back
 
+Pointers and mutable field assignment,
+
+Any record that has a mutable field `<-` is used to assign
+value to the mutable field
+```ocaml
+type tt = { mutable mf: int };; (* note: mutable keyword goes b4 field name *)
+let t1 = { mf = 1 };;
+t1.mf <- 99;;    (* changing the value of mutable field *)
+```
+
 Why imperative mutability?
 Sometimes for algorithms, I/O
 
 You can make your own types which are refs by suffixing
 existing type with ref
+
+Implementation is also simple
+```ocaml
+type 'a ref = { mutable contents: 'a };;
+
+let ref x = { contents = x };;
+val ref: 'a -> 'a ref = <fun>
+
+let (!) r = r.contents;;
+val ! : 'a ref -> 'a = <fun>
+
+let (:=) x b = x.contents <- b;;
+val (:=) :: 'a ref -> 'a -> unit = <fun>
+```
 
 e.g.
 type intboxes = int ref;; // in types ref is written in end
