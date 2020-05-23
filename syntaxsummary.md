@@ -521,17 +521,18 @@ Evaluation rules: let-bound term i.e. expr1(let-bound-term) is always evaluated 
 
 Shadowing: newest lexical definition is available:
 e.g. try following out
-
+```ocaml
 #let x = 7 in
  let y =
      let x = 2 in
      	 x + 1 // 2 is shadowing 7
  in
  x + y;;// 7 in effect.
-
+```
 will give you 10
 
 Another example:
+```ocaml
 let x = 1;; // global id x
 // 1
 let z = // glbal id z
@@ -542,7 +543,7 @@ let z = // glbal id z
 
 x;;
 // 1
-
+```
 
 * Every value binding and every function binding is an act of pattern matching.
 e.g. let identifier = expression is just a special case of
@@ -584,15 +585,15 @@ evaluated and returned.
 
 There are many ways to write this:
 1.) lambda form
-# let sum = fun i j -> i + j;;
+`# let sum = fun i j -> i + j;;`
 val sum : int -> int -> int // this type expr associates to right. 
 
 Note: this is same as :
-# let sum = (fun i -> (fun j -> i + j));;
+`# let sum = (fun i -> (fun j -> i + j));;`
 So all multi argument functions can be converted into single arg functions
 
 2.) sugared let form
-# let sum i j = i + j;;
+`# let sum i j = i + j;;`
 
 Another useful use of multi argument functions is partial application
 e.g.
@@ -640,72 +641,81 @@ Labeled parameters are specified with syntax ~label: pattern.
 Labeled argumets have similar syntax ~label: expression.
 
 e.g.
+```ocaml
 # let f ~x:i ~y:j = i - j;; //x and y are labels, i & j are labeled parameters
 val f: x:int -> y:int -> int = <fun>
-
+```
 
 // labeled arguments passed to function f
+```ocaml
 # f ~y:1 ~x:2 ;;
 -: int = 1
-
+```
 // NOte: order does not matter in case of labeled arguments
 // passing a single labeled argument
+```ocaml
 # f ~y:1;;
 -: x:int -> int = <fun>
-
+```
 ** Many a times you would want to be label names same as parameter
 names when defining a function, so there is a ocaml shorthand ~label
 
 e.g.
+```ocaml
 # let f ~x ~y = x - y;;
-
+```
 ** similarly argument ~label represents both the label and argument
 
 e.g.
+```ocaml
 # let y = 1 in
   let x = 2 in
       f ~y ~x;;
-
+```
 
 Optional parameters can be specified with ?
 e.g.
+```ocaml
 # let g ?(x = 1) y = x - y;;
 val g: ?x:int -> int = <fun>
-
+```
 arguments:
+```ocaml
 # g 1;; // y is interpreted as 1
 
 # g ~x:3 4;; // to use optional argument, it should always be labeled.
-
+```
 Rules of thumb to follow for optional and labeled arguments:
 * optional parameter should always be followed by non optional parameter. This makes definition unambiguous to the compiler.
 This is because it isn't possible to know when an optional
 argument has been omitted.
 Try out plyaing wiht
+```
 # let f ~x ?(y = 1) = x - y;;
-
-
+```
 
 * order of labeled args does not matter, except when label occurs more than once(wtf?)
+```ocaml
 # let h ~x:i ~x:j ?(y = 1) ~z =
    i*1000 + j*100 + y*10 + z;;
 
 # h ~z:3 ~x:4 ~y:5 ~x:6;;
   int = 4653
-
+```
 * Labeled and optional arguments should be specified explicitly for
 higher order functions.
 Always annotate types of input/output functions in higher order fns
 e.g.
+```ocaml
 # let apply (g: ?x:int -> int -> int) = g ~x:1 2 + 3;;
-
+```
 ---------------------Pattern matching semantics----------------------------
-
+```ocaml
 match exp0 with
   | pat1 -> expr1
   | pat2 -> expr2
   | pat3 -> expr3
-
+```
 Operational semantics:
             First always exp0 is evaluated, then it is matched top to bottom,
             left to right with patterns. A pattern is an expression made of
@@ -803,16 +813,19 @@ one wasn't intended. In this case types can be constrained with
 syntax (s : type), where s can be pattern or expression.
 
 e.g.
+```ocaml
 #let id_int (i: int) = i;;
 val id_int : int -> int = <fun>
-
+```
 Above was a constraint on parameter/argument type of a function,
 If you want constraint for return type of function,
 it can be put after last parameter.
 
 e.g.
+```ocaml
 #let do_if b i j : int = if b then i else j;;
 val do_if : bool -> int -> int -> int = <fun>
+```
 if we had not specified int at the end the type of expression would have
 been
 do_if : bool -> 'a -> 'a -> 'a = <fun>
@@ -1006,18 +1019,19 @@ Here is a useful example that defines a numeric type
 that is "either" a int with name Integer, "or" a float with name Real
 "or" a canonical Zero.
 The or is highlighted for the fact that it is a disjoint union.
-
+```ocaml
 # type number =
 Zero
 | Integer of int
 | Real of float;;
-
+```
 How to construct values of union type?
 Just tag it with Constructor
 
 e.g.
+```ocaml
 #let z = Integer 1;;
-
+```
 Note: Patterns also use constructors, remember patterns are combinations
 of patterns, constants and Constructors.
 
@@ -1046,34 +1060,38 @@ or variants that can have a type parameter/ type variable 'a;
 e.g. type 'a genericlist = Nil | Cons of 'a * 'a genericlist;;
 
 A parameterized datatype is an example of a parameterized type constructor: a function that takes in parameters and gives back a type. Other languages have parameterized type constructors. For example, in Java you can declare a parameterized class.
-
+```java
 class List<T> {  //T is the type variable
   T head;
   List <T> tail;
   ...
 }
+```
 
 Let's go along the same lines and define a generic binary tree,
 where each node is either a leaf or has two child subtrees.
 How do I define my own parametrized variant: =>
+```ocaml
 # type 'a tree =
   Node of 'a * 'a tree * 'a tree
  |Leaf;;
-
+```
 If the constructor requires the value of tuple type it is a good idea
 to put it in parentheses.
 e.g.
+```ocaml
 let kk = Node (1, Leaf, Leaf);;
-
+```
 Multiple type parameters : let's say you want something to be generic
 not only on a single type parameter, but on two type parameters,
 e.g. like a dictionary. You might have done Java, then you would know
-HashMap<K,V> has two type variables K and V.
+`HashMap<K,V>` has two type variables `K` and `V`.
 In ML, multiple type parameters are written between parentheses,
 and seperated by commas.
 i.e.
+```ocaml
   type ('a, 'b) xxx = { aaa: 'a; bbb: 'b; ccc: int; }
-
+```
 Question: We can have parametrized types, but can we have parametrized
 functions ?
 
@@ -1088,22 +1106,22 @@ are prefixed with back-quote (`)
 and type deifinition is enclosed in [> ...] brackets.
 
 Open types will often need an _ in definition alson
-
+```ocaml
 type color = Red | Black;;
 let typeprinteropen = function
 | `Red -> "Hi color"
 | `None -> "found None"
 | _ -> "What is this ?";;
 val typeprinteropen : [> `None | `Red ] -> key = <fun>
-
+```
 Otherwise they result in Closed union type definitons :
-
+```ocaml
 let typeprinter = function
 | `Red -> "Hi true"
 | `None -> "found none"
 ;;
 val typeprinter : [< `None | `Red ] -> key = <fun>  
-
+```
 Closed Union type :
 > = specified cases and more.. OpenUnion
 < = specified cases only. ClosedUnion
@@ -1128,9 +1146,10 @@ Note the output has written constraint :
 type 'a mixedColor = 'a constraint 'a = [> `None | `Red ] 
 
 The constraint form is also written as
+```ocaml
 let (zero: a' mixedColor) = `Zero;;
 val zero : [> `None | `Red | `Zero ] = `Zero 
-
+```
 ---------------------------Reference Cell and side effects-----------------
 
 Principal tool is reference cell.
@@ -1140,18 +1159,23 @@ A ref is a record type with a single mutable field called content.s
 Primary operations
 
 1. Allocation (create reference cell)
+```ocaml
    val ref: 'a -> 'a ref // allocation operations return ref of type passed
-
+```
 2. Assignment (Change reference cell contents)
-   val (:=) : 'a ref -> 'a -> unit // assignment operations do their work on the storage and don't return anything so are usually followed by a ';'
-
+```ocaml
+   val (:=) : 'a ref -> 'a -> unit // assignment operations do their work on the 
+   storage and don't return anything so are usually followed by a ';'
+```
 3. Dereferencing (Get value inside reference cell)
+```ocaml
    val (!) : 'a ref -> 'a // dereference operations remove ref of the type passed
-
+```
 Uses in one example:
+```ocaml
 let flag = ref false;;
 flag := (not !flag);; // toggle flag contents and assign back
-
+```
 Pointers and mutable field assignment,
 
 Any record that has a mutable field `<-` is used to assign
@@ -1183,17 +1207,20 @@ val (:=) :: 'a ref -> 'a -> unit = <fun>
 ```
 
 e.g.
+```ocaml
 type intboxes = int ref;; // in types ref is written in end
 type intarray = (int -> int) ref;;
-
+```
 you can also have ref of compound types
-e.g. let myarr = ref (fun n -> 0);; // in values ref is written at start
-
+e.g. 
+```ocaml
+let myarr = ref (fun n -> 0);; // in values ref is written at start
+```
 Value restriction says that polymorphism should be restricted to
 immutable values only.
 A function application is not a value and mutable reference cell
 is not a value, by this definition they are not truly polymorphic
-as '_a indicate.
+as `'_a` indicate.
 
 Also cyclic data structures(e.g. circular doubly linked list)
 need imperativeness, ask why?
@@ -1255,7 +1282,7 @@ and manipulated like any other value and must begin with uppercase letter.
 Exceptions can (optionally) take a parameter so they can carry
 a value with them that can be extracted and examined if the
 exception is caught. also known as value carrying 
-
+```ocaml
     # exception Foo of string;;
     exception Foo of string
     # exception Bar of int;;
@@ -1268,7 +1295,7 @@ exception is caught. also known as value carrying
     Exception: Bar 12.
     # raise (Foobar (12,"yikes"));;
     Exception: Foobar (12, "yikes").
-
+```
 Exceptions are thrown using "raise" function. raise takes an exception
 and does not return, rather it throws exception
 
@@ -1295,7 +1322,7 @@ and continue evaluation along some other path.
 
 
 Exception handling with "try expr with pattern-matching":
-
+```ocaml
 let safe_inverse n =
   try Some (1/n)
   with Division_by_zero -> None
@@ -1303,7 +1330,7 @@ let safe_inverse n =
 let safe_list_find p l =
   try Some (List.find p l)
   with Not_found -> None
-
+```
 
 --------------------------------- Records and arrays -------------------------
 
