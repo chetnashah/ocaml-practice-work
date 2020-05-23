@@ -8,7 +8,7 @@ class values.
 (=) : 'a -> 'a -> bool, which will always do structural equality (not customizable), but throw on encountering a function or C data
 
 Essential sublanguage of Ocaml (Everything is an expression):
-
+```
 expr ::= | c 	      	       // constant
      	 | (op)		       // parenthesized expression
 	 | x		       // named object
@@ -26,15 +26,15 @@ expr ::= | c 	      	       // constant
 	 | (e1: t1)		// parenthesized expression with type constraint
 	 | begin e1 end		// parenthesized expression
 	 | e1 infix-op e2
-	 
+```
 Expressions evaluate to values in a dynamic environment,
 one enriched by name value bindings.
 Values are syntactic subset of expressions :
-
+```
 v ::= c | (op) | (v1, v2, v3 ... vn)
       | C v
       | fun x -> e // lambdas(abstractions) are function values
-
+```
 Time travel and function closures :
 A function value is really a data struct
 that has two parts:
@@ -89,18 +89,20 @@ ways to declare a function :
    also the lambda way is an expression, meaning it returns a value (the lambda)
    
 2) multi argument let (auto curried):
-let fn a b c = a+b+c
+`let fn a b c = a+b+c`
 which expands as
-let fn = function a -> function b -> function c -> a + b + c
+`let fn = function a -> function b -> function c -> a + b + c`
 
 converting let's to lambdas :
+```ocaml
 let succ x = x + 1;
 let succ = function x -> x + 1;
-
+```
 converting lambdas to lets:
+```ocaml
 let succ = function x -> x * x;;
 let succ x = x * x;;
-
+```
 imp notes :
 a function value ( a closure) can be passed around as a value or returned as a result in case of higher order functions.
 One thing lambdas(anonymous) can't do by themselves is recursion, since a name must
@@ -111,9 +113,10 @@ fun x -> f x (all this lambda does is to use it's argument with another function
 instead just pass f.(unless some kind of laziness is involved)
 
 higher order functions :
+```ocaml
 let h = function f -> function y -> (f y) + y;;
 val h : (int -> int) -> int -> int = <fun> 
-
+```
 Why do functional languages don't need type annotation :
 they are mostly analyzed by datum they are operating on
 and all code is generic <T>
@@ -124,40 +127,43 @@ if it is not used elseWhere.
 
 Type constraint :
 programmer annotating the type helps compiler syntax is like following
-let add (x:int) (y:int) = x + y;;
+`let add (x:int) (y:int) = x + y;;`
 
 Pattern matching :
 The reason pattern matching is useful because of
 structural induction on the length of terms and constructors
 pattern matching applies on values(also function values - just like in lambda calculus)
 lamdba style directly starts with pattern matching without letting us specify params , in match style we let specify param along with fn and also pattern match with same name( here v)
-
+```ocaml
 let imply v = match v with
 | (true,x) -> x
 | (false, x) -> true
-
+```
 Pattern matching should be linear, that is no variable can occur more than
 once inside a pattern e.g.
 
 (Wrong Syntax)
+```ocaml
 let equal cc = match cc with
 | (x,x) -> true  // this a big NO NO
 | (x,y) -> false;;
 error : the variable is bound several times
-
+```
 Pattern matching with "function" keyword lets you pattern match on params:
+```ocaml
 function p1 -> expr1 | p2 -> expr2 |.... | pn -> exprn;
-
+```
 also equivalent to
+```ocaml
 function exp -> match exp with | p1 -> expr1 | p2 -> expr2 |....| pn -> exprn 
-
+```
 
 Total functions and partial functions in case functions
 defined using pattern matching
 e.g.
-let (doubler: int -> int) = function x -> x * 2;;
+`let (doubler: int -> int) = function x -> x * 2;;`
 is total, i.e. is defined for all ints
-let pngpng = function p -> "pong"
+`let pngpng = function p -> "pong"`
 is total, i.e. is defined fo all arguments a'
 
 Here is a function based on pattern matching that is non-total/partial
@@ -172,8 +178,8 @@ by the way how let declarations work it seems)"
 Pattern matching can happen also without using match or function keywords,
 simply using 'let' which does bindings of unbound vars in pattern side of let
 binding (usually useful for single case pattern matchings)
-e.g. let (x,y) = 2,3;; // binds x to 2, and y to 3, env enriched on pattern matching
-let head :: 2 :: _ = [1;2;3];; // binds head to 1
+e.g. `let (x,y) = 2,3;;` // binds x to 2, and y to 3, env enriched on pattern matching
+`let head :: 2 :: _ = [1;2;3];;` // binds head to 1
 
 
 Naming a value being matched using "as" (Good style) :
@@ -182,16 +188,17 @@ part or all of pattern. (Also helps avoid reconstruction sometimes)
 "as" keyword in pattern matching, is greedy and takes as many terms to left
 as possible unless you put a bracket.
 Let's say we have :
+```ocaml
 # let rec compress = function
   | a :: (b :: _ as t) -> if a = b then compress t else a :: compress t
   | smaller -> smaller;;
-
+```
 One would have thought t is bound to _ but instead,
 Here t is bound to b :: _
 
 Note rhs of a pattern match that happened correctly,
 rhs is evaluated in environment enriched by the bindings done during pattern matching e.g.
-```
+```ocaml
 let rec fold_left f accu l =
   match l with
     [] -> accu
@@ -199,25 +206,27 @@ let rec fold_left f accu l =
 ```
 
 here is another example of comparing rationals:
+```ocaml
 let min_rat pr = match pr with
 | ((_,0), p2) -> p2
 | (p1, (_,0)) -> p1
 | (((n1, d1) as r1),((n2, d2) as r2)) ->
     if (n1 * d2) < (n2 * d1) then r1 else r2;;
-
+```
 
 Evaluation order in chained let constructs :
 e.g.
+```ocaml
  let x = 1 in let y = x+2 in let z = y+3 in z;;
-
+```
 Note that here the order of evaluation is also left-to-right.
 (It is always left-to-right in every chain of let constructs.)
 
 Scoping in let expressions :
 OCaml scoping rules are the usual ones, i.e., names refer to the nearest (innermost) definition. In the expression:
-
+```ocaml
 let v = e1 in e2
-
+```
 The variable v isn't visible (i.e., cannot be named) in e1. If (by chance) a variable of that name appears in e1, it must refer to some outer definition of (a different) v
 
 Must do ex 3.2 in jason hickey's textbook as practice
@@ -242,30 +251,35 @@ type constructor that does not need any argument is also known as a constant con
 and can be directly treated as values
 
 list of a single type:
+```ocaml
 type pincodes = int list;;
 type guests = int string;;
-
+```
 unnamed tuples/regular tuples :
+```ocaml
 type myType = int * string;;
 type point3d = float * float * float;;
+```
 
 tuple/record(named tuples) types(product types) :
 (Note: field names should be lower case)
+```ocaml
 type personalName = {
      name: string;
      initial: string option;
      lastName: string;
 }
-
+```
 Note: In Ocaml, order of named tuples does not matter,
-i.e. {name: "hi"; initial: "K"; lastName: "Doe"}
+i.e. `{name: "hi"; initial: "K"; lastName: "Doe"}`
 is same as
-{ initial: "K"; name: "hi"; lastName: "Doe"}
+`{ initial: "K"; name: "hi"; lastName: "Doe"}`
 or same as
-{ lastname: "Doe"; initial: "K"; name: "hi" }
+`{ lastname: "Doe"; initial: "K"; name: "hi" }`
 
 variant(Sum) types:
 e.g.
+```ocaml
 type suit = Spades | Hearts | Diamonds | Clubs;; constant constructors/enums
 type card =
 | King of suit
@@ -274,41 +288,55 @@ type card =
 | Minor_card of suit * int
 | Trump of int
 | Joker;;
-
+```
 Type constructors are useful in pattern matching :
 people usually write an accompanying
 tostring function for declared types like this(like for java POJOs)
 
-
+```ocaml
 let string_of_suit = function
 | Spades -> "spades"
 | Hearts -> "hearts"
 | Diamonds -> "diamonds"
 | Clubs -> "clubs"
-
+```
 You will often see recursive variants used for defining recursive data types
 like trees etc :
+```ocaml
 type binary_tree =
  | Leaf of int
  | Tree of binary_tree * binary_tree
+```
+One can also have `parametrized/generics variants`: i.e. type parameter in variant
+Usually represented by a tick foloowed by letter e.g. `'a` and this type 
+parameter precedes type name in the definition
+```ocaml
+type 'a binary_tree =
+ | Leaf of 'a
+ | Tree of binary_tree * binary_tree
+```
 
 
 Since sum types and product types are algebraic data types
 you can arbitrarily combine them to make new types
 e.g.
 1) sum of product of type
+```ocaml
 type foo =
 | Nothing
 | Pair of int * int
 | Info of String * String
+```
 
 2)sum of sum of types
+```ocaml
 type Meeting = Hello | Hi
 type Parting = Bye | GoodBye
 
 type Greeting = Meeting | Greeting
-
+```
 3) product of product of types
+```ocaml
 //t1 = string * string option  * string
 type personalName = {
      firstName : string;
@@ -327,21 +355,23 @@ type contactInfo = {
      perosnalName : personalName;
      adress: addressInfo;
 }
-
+```
 4) product of sum of types
+```ocaml
 type suit = Clubs | Diamonds | Hearts | Spade
 type face = One | Two | Three | ... | Jack | Queen | King | Ace
 type cardPlayed = {
      suit: suit;
      face: face;
 }
-
+```
 * Writing good toString functions for algebraic data types:
 
 1. for variant/tagged union/discriminated unions/sum types, use pattern matching to write a
 good toString function
 
 e.g.
+```ocaml
 type animal = Cat of int
      	    | Dog of int
 	    | Bear of String
@@ -352,11 +382,12 @@ let animalPrinter (ani: animal) = match ani with
 			| Dog dn -> "Animal is a dog with nuum : " ^ (string_of_int dn)
 			| Bear st -> "Animal is a bear with st : " ^ st
 			| Fish -> "Animal is a fish with no other arg"
-
+```
 (* ^ is ocaml's way of joining strings together *)
 
 2. for record/tuple(product types) pattern matching the pattern should look like a record/tuple
 e.g/
+```ocaml
 # type state = {
      lcd: int; (* last computation done *)
      vpr: int; (* value printed on screen *)
@@ -368,11 +399,9 @@ e.g/
 # let sti = { lcd = 4; vpr = 0; };;
 
 # statePrinter sti;;
+```
 
-
-
-
----- Subtyping and inclusion polymorphism in Ocaml(More in Ora book --
+-------- Subtyping and inclusion polymorphism in Ocaml(More in Ora book --
 Subtyping makes it possible for an object of some type to be
 considered and used as an object of other type.
 Subtyping relation is only meaningful between objects,
@@ -411,11 +440,12 @@ OR
 let binding is also an expression.
 let binding is defined as let pattern = expr;;, this whole line is an expr,
 so you can do:
+```ocaml
 let a =4 in
     let b = 5 in
     	let c = 2 in
 	    a * b * c;;
-
+```
 
 Function definition is an expression :
 e.g.
@@ -437,32 +467,32 @@ into a namespace.
 definitions of data type and associated operations over 
 that type e.g. stack, queue etc). and it is introduced by
 syntax : 
-
+```ocaml
 module ModuleName [:t] = 
 struct
   definitions 
 end
-
+```
 Signature : Signature are interfaces for structures.
 A signature specifies which components of structure are 
 accessible from outside(can hide some) and with which type.
 syntax :
-
+```ocaml
 module type SignatureName = sig 
   type specifications 
 end
-
+```
 Modules and files :
 .ml and .mli files are automatically wrapped in 
 struct and sig respectively e.g.
 If myfile.ml has contents DM  [and myfile.mli has contents DS]
 then OCaml compiler behaves essentially as though: 
-
+```ocaml
 module Myfile [: sig DS end] = 
 struct
   DM
 end
-
+```
 Note:  no struct or sig keywords, no naming of module or module type 
 Note:  comments to client in .mli
 , comments to implementers in .ml
@@ -1279,19 +1309,20 @@ let safe_list_find p l =
 
 Records types can be defined with type keyword and placing a ; seperated
 list of labels and their types seperated with ":" inside curly brances
-
+```ocaml
 type db_entry = {
      name : string;
      age : int option;
 }
-
+```
 Record values are initialized with using "=" in place of ":",
 like following
-
+```ocaml
 let entry1 = {
     name = "Chetna";
     age = None
 }
+```
 the interpreter automatically infers type based on fields. (entry1: db_entry)
 
 Note: You cannot initialize a record value e.g. entry1 without declaring it's type first.
@@ -1299,10 +1330,11 @@ e.g. you have to declare type db_entry above first before making a record like e
 otherwise compiler throws error: "Unbound record field name"
 
 What if I leave out one entry of the record like following :
-
+```ocaml
 let et2 = {
     name = "Kumar";
 }
+```
 then the compiler will throw error :
 Some record fields are undefined. So for initializing a record value
 always gives all label values.
@@ -1322,8 +1354,8 @@ kind of like in other languages(e.g. python) lists are dicts with keys 0, 1, .. 
 
 ---------------------- equality and comparisions ------------------------
 
-x = y in ocaml just like x.equals(y) in Java. (Strucutural/value/deep equality)
+`x = y` in ocaml just like `x.equals(y)` in Java. (Strucutural/value/deep equality)
 
-and x == y just like x == y (comparing the address) in Java. (shallow/address equality)
+and `x == y` just like `x == y` (comparing the address) in Java. (shallow/address equality)
 
 
