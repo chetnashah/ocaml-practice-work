@@ -1057,8 +1057,10 @@ e.g. List of String, List of Ints, List of Cars, i.e. a type variable
 And hence was born the need for Parametrized variants
 or variants that can have a type parameter/ type variable 'a;
 
-e.g. type 'a genericlist = Nil | Cons of 'a * 'a genericlist;;
-
+e.g. 
+```ocaml
+type 'a genericlist = Nil | Cons of 'a * 'a genericlist;;
+```
 A parameterized datatype is an example of a parameterized type constructor: a function that takes in parameters and gives back a type. Other languages have parameterized type constructors. For example, in Java you can declare a parameterized class.
 ```java
 class List<T> {  //T is the type variable
@@ -1150,6 +1152,58 @@ The constraint form is also written as
 let (zero: a' mixedColor) = `Zero;;
 val zero : [> `None | `Red | `Zero ] = `Zero 
 ```
+
+#### Need for polymorphic variants
+Also it should be said polymorphic constructors.
+
+The fact that every constructor is assigned to a unique type when defined and used. Even if the same name appears in the definition of multiple types, the constructor itself belongs to only one type. Therefore, one cannot decide that a given constructor belongs to multiple types, or consider a value of some type to belong to some other type with more constructors.
+
+That is, a variant tag does not belong to any type in particular.
+
+e.g.
+```ocaml
+type animal = Cat | Dog
+type flower = Rose | Tulip
+
+let string_of_animal_or_flower x = match x with
+  | Rose -> "rose"
+  | Tulip -> "tulip"
+  | Dog -> "dog"
+  | Cat -> "cat"
+
+// Error: This variant pattern is expected to have
+// type flower. The constructor Dog does not belong to type flower
+```
+
+Here we see that `type flower_or_animal` with all four constructors will not 
+be created on the fly, and we will see type error.
+
+Similarly, error will also be thrown when you try to mix values of both types
+in a list. e.g.
+```ocaml
+let a = [Dog; Cat; Rose; Tulip;];; // throws error 
+```
+
+To fix this,you can use polymorphic variant/constructors which have a leading
+backtick e.g. 
+```ocaml
+`Dog
+```
+
+Solution e.g.
+```ocaml
+// Below constructors exist out of a type
+let string_of_flower_or_animal x = match x with
+  | `Rose -> "rose"
+  | `Tulip -> "tulip"
+  | `Dog -> "dog"
+  | `Cat -> "cat"
+
+let j = [`Rose; `Tulip; `Dog; `Cat];;
+```
+
+Upper and lower bounds.
+
 ---------------------------Reference Cell and side effects-----------------
 
 Principal tool is reference cell.
@@ -1367,14 +1421,15 @@ Some record fields are undefined. So for initializing a record value
 always gives all label values.
 
 Ways to access record labels:
-1. Dot Notation : use recordname.fieldname, e.g. entry1.name
-2. Pattern matching : let { name = n1; height = h1 } = entry1;;
+1. Dot Notation : use `recordname.fieldname`, e.g. `entry1.name`
+2. Pattern matching : `let { name = n1; height = h1 } = entry1;;`
    then the values are captured in n1 and h1.
 
 3. Functional record updates using with :
 e.g.
+```ocaml
 let entry2 = { entry1 with age = Some 52 };
-
+```
 Tuples are just syntactic sugar for record with field names: 1, 2 ..etc
 kind of like in other languages(e.g. python) lists are dicts with keys 0, 1, .. etc
 
